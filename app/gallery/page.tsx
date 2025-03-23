@@ -21,7 +21,7 @@ export default function GalleryPage() {
   ]
 
   // Gallery images
-  const baseUrl = process.env.ENV_IMAGE;
+  const baseUrl = process.env.ENV_IMAGE
 
   const galleryImages = [
     {
@@ -120,8 +120,7 @@ export default function GalleryPage() {
       description: "Discover the rich history and vibrant culture of Delhi.",
       category: "events",
     },
-  ];
-  
+  ]
 
   return (
     <div className="container mx-auto px-4 py-12">
@@ -136,12 +135,7 @@ export default function GalleryPage() {
       {/* Featured Video Section */}
       <div className="mb-16">
         <div className="relative aspect-video w-full overflow-hidden rounded-xl">
-        <Image
-          src={`${baseUrl}/images/ROS08732_3_4.jpg`}
-          alt="Hotel Video Thumbnail"
-          fill
-          className="object-cover"
-          />
+          <Image src={`${baseUrl}/images/ROS08732_3_4.jpg`} alt="Hotel Video Thumbnail" fill className="object-cover" />
           <div className="absolute inset-0 bg-black/30 flex items-center justify-center">
             <Button size="lg" className="rounded-full h-16 w-16 flex items-center justify-center">
               <Play className="h-8 w-8" />

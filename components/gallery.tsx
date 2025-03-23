@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import Image from "next/image"
 import Link from "next/link"
 import { Maximize2, ChevronLeft, ChevronRight, X } from "lucide-react"
@@ -14,37 +14,40 @@ import "swiper/css/pagination"
 
 export default function RoomSlider() {
   const [selectedImage, setSelectedImage] = useState<string | null>(null)
+  const [baseUrl, setBaseUrl] = useState<string>("")
 
-  // Sample gallery images - replace with your actual data
-  const baseUrl = process.env.ENV_IMAGE;
+  useEffect(() => {
+    // Set the image path from environment variable
+    setBaseUrl(process.env.NEXT_PUBLIC_ENV_IMAGE || "")
+  }, [])
 
-const galleryImages = [
-  {
-    src: `${baseUrl}/images/ROS08981_2_3.jpg?height=750&width=1000&text=Luxury+Suite`,
-    alt: "Luxury Suite",
-    caption: "Luxury Suite",
-  },
-  {
-    src: `${baseUrl}/images/ROS08849_50_51.jpg?height=750&width=1000&text=Deluxe+Room`,
-    alt: "Deluxe Room",
-    caption: "Deluxe Room",
-  },
-  {
-    src: `${baseUrl}/images/ROS08936_7_8.jpg?height=750&width=1000&text=Executive+Suite`,
-    alt: "Executive Suite",
-    caption: "Executive Suite",
-  },
-  {
-    src: `${baseUrl}/images/ROS08900_1_2.jpg?height=750&width=1000&text=Presidential+Suite`,
-    alt: "Presidential Suite",
-    caption: "Presidential Suite",
-  },
-  {
-    src: `${baseUrl}/images/ROS08819_20_21.jpg?height=750&width=1000&text=Family+Room`,
-    alt: "Family Room",
-    caption: "Family Room",
-  },
-];
+  const galleryImages = [
+    {
+      src: `${baseUrl}/images/ROS08981_2_3.jpg`,
+      alt: "Luxury Suite",
+      caption: "Luxury Suite",
+    },
+    {
+      src: `${baseUrl}/images/ROS08849_50_51.jpg`,
+      alt: "Deluxe Room",
+      caption: "Deluxe Room",
+    },
+    {
+      src: `${baseUrl}/images/ROS08936_7_8.jpg`,
+      alt: "Executive Suite",
+      caption: "Executive Suite",
+    },
+    {
+      src: `${baseUrl}/images/ROS08900_1_2.jpg`,
+      alt: "Presidential Suite",
+      caption: "Presidential Suite",
+    },
+    {
+      src: `${baseUrl}/images/ROS08819_20_21.jpg`,
+      alt: "Family Room",
+      caption: "Family Room",
+    },
+  ]
 
   return (
     <section className="pt-10 ">

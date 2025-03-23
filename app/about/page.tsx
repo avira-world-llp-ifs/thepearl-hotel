@@ -8,6 +8,16 @@ import { Facebook, Twitter, Instagram, ArrowRight, CheckCircle2 } from "lucide-r
 export default function AboutPage() {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
   const [isScrolled, setIsScrolled] = useState(false)
+  const [imagePath, setImagePath] = useState<string>("")
+  const [isLoaded, setIsLoaded] = useState(false)
+
+  useEffect(() => {
+    // Set the image path from environment variable
+    const envImage = process.env.NEXT_PUBLIC_ENV_IMAGE || ""
+    setImagePath(envImage)
+    setIsLoaded(true)
+    console.log("Environment image path:", envImage) // Debug log
+  }, [])
 
   useEffect(() => {
     const handleScroll = () => {
@@ -22,14 +32,26 @@ export default function AboutPage() {
     return () => window.removeEventListener("scroll", handleScroll)
   }, [])
 
+  // Default background style
+  const defaultBgStyle = {
+    backgroundImage: `url('/placeholder.svg?height=400&width=1200')`,
+    backgroundSize: "cover",
+    backgroundPosition: "center",
+  }
+
+  // Image path background style
+  const imageBgStyle = {
+    backgroundImage: `url('${imagePath}/images/ROS08903_4_5.jpg')`,
+    backgroundSize: "cover",
+    backgroundPosition: "center",
+  }
+
   return (
     <div className="min-h-screen bg-white">
       {/* Page Title Section */}
       <section
         className="relative h-[400px] bg-cover bg-center"
-        style={{
-          backgroundImage: `url('${process.env.ENV_IMAGE}/images/ROS08903_4_5.jpg')`,
-        }}
+        style={isLoaded && imagePath ? imageBgStyle : defaultBgStyle}
       >
         <div className="absolute inset-0 bg-black/50"></div>
         <div className="container mx-auto px-4 h-full flex flex-col justify-center items-center relative z-10 text-center">
@@ -51,12 +73,14 @@ export default function AboutPage() {
             <div className="w-full md:w-1/2">
               <div className="relative">
                 <div className="w-full h-[500px] relative rounded-lg overflow-hidden">
-                  <Image
-                    src={`${process.env.ENV_IMAGE}/images/ROS08981_2_3.jpg`}
-                    alt="Luxex Hotel History"
-                    fill
-                    className="object-cover"
-                  />
+                  {isLoaded && (
+                    <Image
+                      src={`${imagePath}/images/ROS08981_2_3.jpg`}
+                      alt="Luxex Hotel History"
+                      fill
+                      className="object-cover"
+                    />
+                  )}
                 </div>
                 <div className="absolute -bottom-10 -right-10 bg-white p-6 rounded-lg shadow-lg w-48 h-48 flex flex-col items-center justify-center">
                   <span className="text-4xl font-bold text-[#b18c57]">25</span>
@@ -93,13 +117,15 @@ export default function AboutPage() {
 
               <div className="flex items-center mb-8">
                 <div className="w-20 h-20 rounded-full overflow-hidden mr-6">
-                  <Image
-                    src={`${process.env.ENV_IMAGE}/images/ROS08981_2_3.jpg`}
-                    alt="Jonathan Dawson"
-                    width={100}
-                    height={100}
-                    className="object-cover"
-                  />
+                  {isLoaded && (
+                    <Image
+                      src={`${imagePath}/images/ROS08981_2_3.jpg`}
+                      alt="Jonathan Dawson"
+                      width={100}
+                      height={100}
+                      className="object-cover"
+                    />
+                  )}
                 </div>
                 <div>
                   <p className="italic text-gray-600 mb-2">
@@ -123,18 +149,18 @@ export default function AboutPage() {
         </div>
       </section>
 
+      {/* Rest of the component remains the same, but we'll add conditional rendering for all images */}
       {/* Our Values Section */}
       <section className="py-20 bg-gray-50">
+        {/* Content remains the same */}
         <div className="container mx-auto px-4">
           <div className="text-center mb-16">
             <h2 className="text-3xl md:text-4xl font-serif text-[#4a4a4a] mb-6">The Principles That Guide Us</h2>
-
             <p className="text-gray-600 max-w-2xl mx-auto">
               At The Pearl, our core values shape every aspect of our service and operations. These principles have
               guided us for over two decades and continue to define the exceptional experience we provide.
             </p>
           </div>
-
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             <div className="bg-white p-8 rounded-lg shadow-md text-center">
               <div className="w-16 h-16 bg-[#b18c57]/10 rounded-full flex items-center justify-center mx-auto mb-6">
@@ -368,7 +394,6 @@ export default function AboutPage() {
         <div className="container mx-auto px-4">
           <div className="text-center mb-16">
             <h2 className="text-3xl md:text-4xl font-serif text-[#4a4a4a] mb-6">Recognition & Awards</h2>
-
             <p className="text-gray-600 max-w-2xl mx-auto">
               Our commitment to excellence has been recognized by the most prestigious organizations in the hospitality
               industry.
@@ -378,13 +403,15 @@ export default function AboutPage() {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
             <div className="bg-white p-8 rounded-lg shadow-md text-center">
               <div className="w-20 h-20 mx-auto mb-6">
-                <Image
-                  src={`${process.env.ENV_IMAGE}/images/ROS08981_2_3.jpg`}
-                  alt="Five Star Award"
-                  width={100}
-                  height={100}
-                  className="w-full h-auto"
-                />
+                {isLoaded && (
+                  <Image
+                    src={`${imagePath}/images/ROS08981_2_3.jpg`}
+                    alt="Five Star Award"
+                    width={100}
+                    height={100}
+                    className="w-full h-auto"
+                  />
+                )}
               </div>
               <h3 className="text-xl font-bold mb-2">Five Star Award</h3>
               <p className="text-gray-600 mb-4">Forbes Travel Guide</p>
@@ -393,13 +420,15 @@ export default function AboutPage() {
 
             <div className="bg-white p-8 rounded-lg shadow-md text-center">
               <div className="w-20 h-20 mx-auto mb-6">
-                <Image
-                  src={`${process.env.ENV_IMAGE}/images/ROS08819_20_21.jpg`}
-                  alt="Best Luxury Hotel"
-                  width={100}
-                  height={100}
-                  className="w-full h-auto"
-                />
+                {isLoaded && (
+                  <Image
+                    src={`${imagePath}/images/ROS08819_20_21.jpg`}
+                    alt="Best Luxury Hotel"
+                    width={100}
+                    height={100}
+                    className="w-full h-auto"
+                  />
+                )}
               </div>
               <h3 className="text-xl font-bold mb-2">Best Luxury Hotel</h3>
               <p className="text-gray-600 mb-4">World Travel Awards</p>
@@ -408,13 +437,15 @@ export default function AboutPage() {
 
             <div className="bg-white p-8 rounded-lg shadow-md text-center">
               <div className="w-20 h-20 mx-auto mb-6">
-                <Image
-                  src={`${process.env.ENV_IMAGE}/images/ROS09257_8_9.jpg`}
-                  alt="Michelin Star"
-                  width={100}
-                  height={100}
-                  className="w-full h-auto"
-                />
+                {isLoaded && (
+                  <Image
+                    src={`${imagePath}/images/ROS09257_8_9.jpg`}
+                    alt="Michelin Star"
+                    width={100}
+                    height={100}
+                    className="w-full h-auto"
+                  />
+                )}
               </div>
               <h3 className="text-xl font-bold mb-2">Michelin Star</h3>
               <p className="text-gray-600 mb-4">Michelin Guide</p>
@@ -423,13 +454,15 @@ export default function AboutPage() {
 
             <div className="bg-white p-8 rounded-lg shadow-md text-center">
               <div className="w-20 h-20 mx-auto mb-6">
-                <Image
-                  src={`${process.env.ENV_IMAGE}/images/ROS08969_70_71.jpg`}
-                  alt="Sustainability Excellence"
-                  width={100}
-                  height={100}
-                  className="w-full h-auto"
-                />
+                {isLoaded && (
+                  <Image
+                    src={`${imagePath}/images/ROS08969_70_71.jpg`}
+                    alt="Sustainability Excellence"
+                    width={100}
+                    height={100}
+                    className="w-full h-auto"
+                  />
+                )}
               </div>
               <h3 className="text-xl font-bold mb-2">Sustainability Excellence</h3>
               <p className="text-gray-600 mb-4">Green Hospitality Awards</p>
@@ -443,9 +476,9 @@ export default function AboutPage() {
       <section className="py-20 bg-white">
         <div className="container mx-auto px-4">
           <div className="flex flex-col md:flex-row items-center gap-16">
+            {/* Content remains the same */}
             <div className="w-full md:w-1/2">
               <h2 className="text-3xl md:text-4xl font-serif text-[#4a4a4a] mb-6">The Pearl Difference</h2>
-
               <p className="text-gray-600 mb-8">
                 What sets The Pearl apart is our unwavering commitment to creating extraordinary experiences. We believe
                 that true luxury is found in the perfect balance of impeccable service, elegant surroundings, and
@@ -505,38 +538,46 @@ export default function AboutPage() {
               <div className="grid grid-cols-2 gap-4">
                 <div className="space-y-4">
                   <div className="h-[200px] relative rounded-lg overflow-hidden">
-                    <Image
-                      src={`${process.env.ENV_IMAGE}/images/ROS08969_70_71.jpg`}
-                      alt="Luxex Spa"
-                      fill
-                      className="object-cover"
-                    />
+                    {isLoaded && (
+                      <Image
+                        src={`${imagePath}/images/ROS08969_70_71.jpg`}
+                        alt="Luxex Spa"
+                        fill
+                        className="object-cover"
+                      />
+                    )}
                   </div>
                   <div className="h-[250px] relative rounded-lg overflow-hidden">
-                    <Image
-                      src={`${process.env.ENV_IMAGE}/images/ROS08921_2_3.jpg`}
-                      alt="Luxex Restaurant"
-                      fill
-                      className="object-cover"
-                    />
+                    {isLoaded && (
+                      <Image
+                        src={`${imagePath}/images/ROS08921_2_3.jpg`}
+                        alt="Luxex Restaurant"
+                        fill
+                        className="object-cover"
+                      />
+                    )}
                   </div>
                 </div>
                 <div className="space-y-4 mt-8">
                   <div className="h-[250px] relative rounded-lg overflow-hidden">
-                    <Image
-                      src={`${process.env.ENV_IMAGE}/images/ROS08930_1_2.jpg`}
-                      alt="Luxex Pool"
-                      fill
-                      className="object-cover"
-                    />
+                    {isLoaded && (
+                      <Image
+                        src={`${imagePath}/images/ROS08930_1_2.jpg`}
+                        alt="Luxex Pool"
+                        fill
+                        className="object-cover"
+                      />
+                    )}
                   </div>
                   <div className="h-[200px] relative rounded-lg overflow-hidden">
-                    <Image
-                      src={`${process.env.ENV_IMAGE}/images/ROS08957_8_9.jpg`}
-                      alt="Luxex Concierge"
-                      fill
-                      className="object-cover"
-                    />
+                    {isLoaded && (
+                      <Image
+                        src={`${imagePath}/images/ROS08957_8_9.jpg`}
+                        alt="Luxex Concierge"
+                        fill
+                        className="object-cover"
+                      />
+                    )}
                   </div>
                 </div>
               </div>
@@ -548,13 +589,14 @@ export default function AboutPage() {
       {/* Call to Action */}
       <section
         className="py-20 bg-cover bg-center relative"
-        style={{backgroundImage: `url('${process.env.ENV_IMAGE}/images/ROS09194_5_6.jpg')`,}}      >
+        style={isLoaded ? { backgroundImage: `url('${imagePath}/images/ROS09194_5_6.jpg')` } : defaultBgStyle}
+      >
         <div className="absolute inset-0 bg-black/70"></div>
         <div className="container mx-auto px-4 relative z-10 text-center">
           <h2 className="text-3xl md:text-4xl font-serif text-white mb-6">Experience the Epitome of Luxury</h2>
           <p className="text-gray-300 max-w-2xl mx-auto mb-8">
-            Join us at Luxex Hotel and discover why discerning travelers from around the world choose us for their most
-            memorable stays.
+            Join us at The Pearl Hotel and discover why discerning travelers from around the world choose us for their
+            most memorable stays.
           </p>
           <div className="flex flex-col sm:flex-row justify-center gap-4">
             <Link

@@ -3,10 +3,75 @@
 import { useState, useEffect } from "react"
 import Image from "next/image"
 import Link from "next/link"
-import { X, Phone, Mail, MapPin, Facebook, Twitter, Instagram, ChevronUp, MapPinned } from "lucide-react"
+import { X, Phone, Mail, MapPin, Facebook, Twitter, Instagram, ChevronUp, MapPinned, Check } from "lucide-react"
 import EnquiryForm from "@/components/enquiry-form"
-import HotelAbout from "@/components/hotel-about"
 import RoomSlider from "@/components/gallery"
+import HeroSlider from "@/components/hero-slider"
+import { getImagePath } from "@/utils/image-path"
+
+// Custom HotelAbout component directly in page.tsx
+function HotelAbout() {
+  return (
+    <div className="relative w-full h-[700px] md:h-[650px] lg:h-[750px]">
+      {/* Background image */}
+      <div className="absolute inset-0 w-full h-full">
+        <Image
+          src={`${process.env.NEXT_PUBLIC_ENV_IMAGE}/images/ROS08603_4_5.jpg`}
+          alt="Hotel The Pearl interior with elegant green drapes and comfortable seating"
+          fill
+          className="object-cover"
+          priority
+        />
+      </div>
+
+      {/* White card with content that overlaps the image */}
+      <div className="absolute left-0 top-1/2 -translate-y-1/2 w-[97%] md:w-[70%] lg:w-[60%] bg-white p-6 md:p-10 rounded-r-3xl shadow-lg">
+        <h1 className="text-3xl md:text-4xl font-bold text-center mb-4 md:mb-6">About Hotel The Pearl</h1>
+
+        <p className="text-gray-700 text-center text-sm md:text-base mb-4">
+          Experience the best of Indian hospitality at Hotel The Pearl, one of the leading economy hotels in India. Our
+          boutique hotel in New Delhi offers a blend of fine living, comfort, and affordability.
+        </p>
+
+        <p className="text-gray-700 text-center text-sm md:text-base mb-4">
+          Conveniently located in City Centre, near Connaught Place, Paharganj Market, and adjacent to the New Delhi
+          Railway Station, our hotel provides easy access to the city and beyond.
+        </p>
+
+        {/* Features section */}
+        <div className="mt-8 w-full max-w-6xl mx-auto px-6">
+          <h2 className="text-center text-xl md:text-2xl font-medium text-[#F8AFA6]">
+            DESTINATION FOR MEMORABLE EXPERIENCES
+          </h2>
+
+          <div className="flex flex-col md:flex-row justify-center gap-20 mb-6">
+            <div className="flex flex-col items-center">
+              <div className="w-20 h-20 rounded-full bg-[#f9f5f2] flex items-center justify-center mb-2">
+                <Check className="text-[#e9a8a1] w-8 h-8" />
+              </div>
+              <p className="text-gray-400 text-xs uppercase">SED LACINIA</p>
+              <p className="text-gray-700 font-medium text-lg">Best Amenities</p>
+            </div>
+
+            <div className="flex flex-col items-center">
+              <div className="w-20 h-20 rounded-full bg-[#f9f5f2] flex items-center justify-center mb-2">
+                <Check className="text-[#e9a8a1] w-8 h-8" />
+              </div>
+              <p className="text-gray-400 text-xs uppercase">SED LACINIA</p>
+              <p className="text-gray-700 font-medium text-lg">Luxury Rooms</p>
+            </div>
+          </div>
+
+          <div className="flex justify-center">
+            <button className="bg-[#1e1e2d] text-white px-12 py-4 uppercase text-sm tracking-wider hover:bg-[#2a2a3d] transition-colors">
+              Discover More
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  )
+}
 
 export default function Home() {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
@@ -14,13 +79,21 @@ export default function Home() {
   const [activeSlide, setActiveSlide] = useState(0)
   const [selectedImage, setSelectedImage] = useState<string | null>(null)
   const [activeReviewIndex, setActiveReviewIndex] = useState(0)
-  const [videoEnded, setVideoEnded] = useState(false)
+  const [videoEnded, setVideoEnded] = useState(false) // Set to false to play video first
   const [currentSlide, setCurrentSlide] = useState(0)
+  const [imagePath, setImagePath] = useState("")
 
+  useEffect(() => {
+    // Set the base image path from environment variable
+    const baseUrl = process.env.NEXT_PUBLIC_ENV_IMAGE || ""
+    setImagePath(baseUrl)
+  }, [])
+
+  // Direct paths to images in the public directory
   const heroSlides = [
-    `${process.env.ENV_IMAGE}/images/hero1.jpg`,
-    `${process.env.ENV_IMAGE}/images/hero2.jpg`,
-    `${process.env.ENV_IMAGE}/images/hero3.jpg`,
+    getImagePath("/images/ROS08819_20_21.jpg"),
+    getImagePath("/images/ROS08921_2_3.jpg"),
+    getImagePath("/images/ROS08930_1_2.jpg"),
   ]
 
   useEffect(() => {
@@ -50,17 +123,6 @@ export default function Home() {
     return () => clearInterval(reviewInterval)
   }, [])
 
-  // Image slider interval after video ends
-  useEffect(() => {
-    if (videoEnded) {
-      const slideInterval = setInterval(() => {
-        setCurrentSlide((prev) => (prev + 1) % heroSlides.length)
-      }, 5000)
-
-      return () => clearInterval(slideInterval)
-    }
-  }, [videoEnded, heroSlides.length])
-
   // Lock body scroll when modal is open
   useEffect(() => {
     if (selectedImage) {
@@ -76,32 +138,32 @@ export default function Home() {
 
   const galleryImages = [
     {
-      src: `${process.env.ENV_IMAGE}/images/room1.jpg`,
+      src: getImagePath("/images/room1.jpg"),
       alt: "Luxury bedroom with tufted headboard and elegant decor",
       caption: "Luxury Suite Bedroom",
     },
     {
-      src: `${process.env.ENV_IMAGE}/images/room2.jpg`,
+      src: getImagePath("/images/room2.jpg"),
       alt: "Close-up of premium room details and door handle",
       caption: "Premium Room Details",
     },
     {
-      src: `${process.env.ENV_IMAGE}/images/room3.jpg`,
+      src: getImagePath("/images/room3.jpg"),
       alt: "Spacious suite with bench at foot of bed",
       caption: "Executive Suite",
     },
     {
-      src: `${process.env.ENV_IMAGE}/images/room4.jpg`,
+      src: getImagePath("/images/room4.jpg"),
       alt: "Elegant standard room with modern furnishings",
       caption: "Deluxe Double Room",
     },
     {
-      src: `${process.env.ENV_IMAGE}/images/room5.jpg`,
+      src: getImagePath("/images/room5.jpg"),
       alt: "Cozy room with wooden ceiling beams",
       caption: "Rustic Comfort Suite",
     },
     {
-      src: `${process.env.ENV_IMAGE}/images/room6.jpg`,
+      src: getImagePath("/images/room6.jpg"),
       alt: "Stylish vanity area with round mirror and plants",
       caption: "Room Amenities",
     },
@@ -114,7 +176,7 @@ export default function Home() {
       location: "New York, USA",
       rating: 5,
       text: "Our stay at The Pearl was absolutely magical. The attention to detail in every aspect of service was impeccable. From the moment we arrived, the staff made us feel like royalty. The room was spacious, immaculately clean, and the views were breathtaking. We'll definitely be returning!",
-      image: `${process.env.ENV_IMAGE}/images/user1.jpg`,
+      image: "/images/user1.jpg",
       date: "March 15, 2023",
       type: "Honeymoon Stay",
     },
@@ -124,7 +186,7 @@ export default function Home() {
       location: "Singapore",
       rating: 5,
       text: "As a frequent business traveler, I've stayed in many luxury hotels around the world, but The Pearl stands out for its exceptional service and attention to detail. The staff anticipated my needs before I even had to ask. The business facilities were top-notch, and the room was the perfect sanctuary after long meetings.",
-      image: `${process.env.ENV_IMAGE}/images/user2.jpg`,
+      image: "/images/user2.jpg",
       date: "January 22, 2023",
       type: "Business Trip",
     },
@@ -134,7 +196,7 @@ export default function Home() {
       location: "Madrid, Spain",
       rating: 5,
       text: "We celebrated our anniversary at The Pearl and it exceeded all expectations. The staff arranged a special dinner on our balcony with candles and flowers. The spa treatments were divine and the room was pure luxury. Every detail was perfect - from the Egyptian cotton sheets to the handmade chocolates at turndown.",
-      image: `${process.env.ENV_IMAGE}/images/user3.jpg`,
+      image: "/images/user3.jpg",
       date: "February 8, 2023",
       type: "Anniversary Celebration",
     },
@@ -144,7 +206,7 @@ export default function Home() {
       location: "London, UK",
       rating: 5,
       text: "The culinary experience at The Pearl is worth the stay alone. The in-house restaurant serves some of the finest cuisine I've ever tasted. The chef's tasting menu with wine pairings was exceptional. Beyond the food, the rooms are spacious and elegant, and the staff is attentive without being intrusive.",
-      image: `${process.env.ENV_IMAGE}/images/user4.jpg`,
+      image: "/images/user4.jpg",
       date: "April 3, 2023",
       type: "Culinary Getaway",
     },
@@ -155,54 +217,38 @@ export default function Home() {
       <div className="mx-auto max-w-[1440px]">
         {/* Full-Page Video/Slider Hero Section */}
         <section className="relative h-screen w-full overflow-hidden">
-          {/* Video/Image Background */}
-          <div className="absolute inset-0 w-full h-full">
-            {!videoEnded ? (
+          {!videoEnded ? (
+            /* Video Player */
+            <div className="absolute inset-0 bg-black z-10">
               <video
+                className="w-full h-full object-cover"
                 autoPlay
                 muted
-                playsInline
-                className="absolute inset-0 w-full h-full object-cover"
                 onEnded={() => setVideoEnded(true)}
+                playsInline
               >
-                <source src={`${process.env.ENV_IMAGE}/images/herovdo.mp4`} type="video/mp4" />
-                {/* Fallback image if video doesn't load */}
-                <Image
-                  src={`${process.env.ENV_IMAGE}/images/hero1.jpg`}
-                  alt="Luxex Hotel"
-                  fill
-                  className="object-cover"
-                  priority
-                />
+                <source src={getImagePath("/images/herovdo.mp4")} type="video/mp4" />
+                Your browser does not support the video tag.
               </video>
-            ) : (
-              <div className="absolute inset-0 w-full h-full">
-                {heroSlides.map((slide, index) => (
-                  <div
-                    key={index}
-                    className={`absolute inset-0 w-full h-full transition-opacity duration-1000 ${
-                      currentSlide === index ? "opacity-100" : "opacity-0"
-                    }`}
-                  >
-                    <Image
-                      src={slide || "/placeholder.svg"}
-                      alt={`The Pearl Hotel - Slide ${index + 1}`}
-                      fill
-                      className={`object-cover transition-transform duration-[3000ms] ease-in-out transform will-change-transform ${
-                        currentSlide === index ? "scale-110" : "scale-100"
-                      }`}
-                      priority={index === 0}
-                    />
-                  </div>
-                ))}
-              </div>
-            )}
-            {/* Overlay */}
-            <div className="absolute inset-0 bg-black/40"></div>
-          </div>
+              <div className="absolute inset-0 bg-black/30"></div>
 
-          {/* Content */}
-          <div className="relative h-full flex flex-col justify-center items-center text-center text-white px-4 z-10">
+              {/* Skip button */}
+              <button
+                onClick={() => setVideoEnded(true)}
+                className="absolute bottom-10 right-10 bg-white/20 hover:bg-white/40 text-white px-4 py-2 rounded-full z-20 transition-colors"
+              >
+                Skip Intro
+              </button>
+            </div>
+          ) : (
+            /* Hero Slider */
+            <div className="absolute inset-0 z-10">
+              <HeroSlider slides={heroSlides} />
+            </div>
+          )}
+
+          {/* Content - shown over both video and slider */}
+          <div className="absolute inset-0 flex flex-col justify-center items-center text-center text-white px-4 z-20">
             <div className="max-w-3xl">
               <div className="flex items-center justify-center gap-4 mb-6">
                 <div className="h-[1px] w-12 bg-gray-300"></div>
@@ -232,155 +278,13 @@ export default function Home() {
                 </Link>
               </div>
             </div>
-
-            {/* Slider Indicators */}
-            {videoEnded && (
-              <div className="absolute bottom-10 flex space-x-2">
-                {heroSlides.map((_, index) => (
-                  <button
-                    key={index}
-                    onClick={() => setCurrentSlide(index)}
-                    className={`w-3 h-3 rounded-full transition-colors ${
-                      currentSlide === index ? "bg-white" : "bg-white/50"
-                    }`}
-                    aria-label={`Go to slide ${index + 1}`}
-                  />
-                ))}
-              </div>
-            )}
-
-            {/* Scroll Down Indicator (only show when video is playing) */}
-            {!videoEnded && (
-              <div className="absolute bottom-10 left-1/2 transform -translate-x-1/2 animate-bounce">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="36"
-                  height="36"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  className="text-white"
-                >
-                  <path d="M12 5v14"></path>
-                  <path d="m19 12-7 7-7-7"></path>
-                </svg>
-              </div>
-            )}
           </div>
         </section>
-
-        {/* Hero Section with Curved Image */}
-        {/* <section className="relative min-h-screen flex flex-col md:flex-row"> */}
-        {/* Left Content */}
-        {/* <div className="w-full md:w-1/2 flex flex-col justify-center p-8 md:p-16 z-10">
-          <div className="max-w-md">
-            
-
-            <h1 className="text-4xl md:text-5xl font-serif text-[#4a4a4a] mb-6">The Pearl Hotel</h1>
-
-            <p className="text-gray-600 mb-12">
-            "Experience the best of Indian hospitality at Hotel The Pearl,
-             one of the leading economy hotel in India. 
-             Our boutique hotel in New Delhi offers a blend of fine living, comfort, and affordability.
-
-            </p>
-
-            <div className="space-y-6">
-              <Link
-                href="/booking"
-                className="inline-flex items-center text-[#b18c57] font-medium uppercase tracking-wider text-sm hover:text-[#9a7848] transition-colors"
-              >
-                <span className="mr-2">MAKE A RESERVATION</span>
-                <Phone className="w-4 h-4" />
-              </Link>
-
-              <div className="h-[1px] w-full bg-gray-200"></div>
-
-              <p className="text-gray-500">
-                Call us at <span className="text-[#b18c57]">+91 (11) 23633363</span>
-              </p>
-            </div>
-          </div>
-        </div> */}
-
-        {/* Right Image with Curved Edge */}
-        {/* <div className="w-full md:w-1/2 relative">
-          <div
-            className="absolute inset-0 overflow-hidden"
-            style={{
-              borderTopLeftRadius: "120px",
-              borderBottomLeftRadius: "120px",
-            }}
-          >
-            <Image
-              src="../images/ROS09257_8_9.jpg"
-              alt="Luxex Hotel Interior"
-              fill
-              className="object-cover"
-              priority
-            />
-          </div>
-        </div>
-      </section> */}
-
-        {/* <section className="relative min-h-screen flex flex-col md:flex-row">
-  <div className="w-full md:w-1/2 flex flex-col justify-center p-8 md:p-16 z-10 bg-white">
-    <div className="max-w-md">
-    <h1 className="text-5xl md:text-7xl font-black text-[#222] mb-8 leading-tight tracking-wide text-center uppercase">The Pearl</h1>
-
-      <p className="text-gray-600 mb-6 text-justify">
-        Experience the best of Indian hospitality at Hotel The Pearl, one of the leading economy hotels in India. Our boutique hotel in New Delhi offers a blend of fine living, comfort, and affordability.
-      </p>
-
-      <p className="text-gray-600 mb-6 text-justify">
-        Conveniently located in City Centre, near Connaught Place, Paharganj Market, and adjacent to the New Delhi Railway Station, our hotel provides easy access to the city and beyond.
-      </p>
-
-
-      <div className="space-y-6">
-        <Link
-          href="/booking"
-          className="inline-flex items-center text-[#b18c57] font-medium uppercase tracking-wider text-sm hover:text-[#9a7848] transition-colors"
-        >
-          <span className="mr-2">MAKE A RESERVATION</span>
-          <Phone className="w-4 h-4" />
-        </Link>
-
-        <div className="h-[1px] w-full bg-gray-200"></div>
-
-        <p className="text-gray-500">
-          Call us at <span className="text-[#b18c57]">+91 (11) 23633363</span>
-        </p>
-      </div>
-    </div>
-  </div>
-
-  <div className="w-full md:w-1/2 relative">
-    <div
-      className="absolute inset-0 overflow-hidden"
-      style={{
-        borderTopLeftRadius: "120px",
-        borderBottomLeftRadius: "120px",
-      }}
-    >
-      <Image
-        src="../images/ROS09257_8_9.jpg"
-        alt="Luxury Hotel Interior"
-        fill
-        className="object-cover"
-        priority
-      />
-    </div>
-  </div>
-</section> */}
 
         <HotelAbout />
 
         {/* Featured Luxury Suite Section */}
-        <section className=" bg-white">
+        <section className="bg-white">
           {/* Heading Section */}
           <div className="text-center py-16 bg-white">
             <h1 className="text-4xl md:text-5xl font-serif text-gray-800 mb-4">ROOMS AND SUITES</h1>
@@ -390,7 +294,7 @@ export default function Home() {
             {/* Left Image */}
             <div className="relative h-[400px] md:h-auto">
               <Image
-                src={`${process.env.ENV_IMAGE}/images/ROS08849_50_51.jpg`}
+                src={`${getImagePath("/images/ROS08849_50_51.jpg")}`}
                 alt="Luxury Suite View 1"
                 fill
                 className="object-cover"
@@ -427,7 +331,7 @@ export default function Home() {
             {/* Right Image */}
             <div className="relative h-[400px] md:h-auto">
               <Image
-                src={`${process.env.ENV_IMAGE}/images/ROS08981_2_3.jpg`}
+                src={`${getImagePath("/images/ROS08981_2_3.jpg")}`}
                 alt="Luxury Suite View 2"
                 fill
                 className="object-cover"
@@ -437,7 +341,7 @@ export default function Home() {
         </section>
 
         {/* Room Comparison Section */}
-        <section className=" bg-gray-50">
+        <section className="bg-gray-50">
           <div className="grid grid-cols-1 md:grid-cols-3">
             {/* Left Content - Deluxe Room */}
             <div className="p-8 md:p-16 flex flex-col justify-center">
@@ -448,12 +352,12 @@ export default function Home() {
                   </span>
                 ))}
               </div>
-              <h2 className="text-4xl md:text-5xl font-serif  mb-8">
+              <h2 className="text-4xl md:text-5xl font-serif mb-8">
                 <span className="block">Superior</span>
                 <span className="block">Double Room</span>
               </h2>
 
-              <p className=" mb-12 text-justify">
+              <p className="mb-12 text-justify">
                 The Superior Double Room at The Pearl Hotel offers a perfect mix of comfort, elegance, and convenience.
                 Designed for both leisure and business travelers, this room provides a spacious and serene retreat in
                 the heart of New Delhi.
@@ -472,7 +376,7 @@ export default function Home() {
             {/* Center Image */}
             <div className="relative h-[400px] md:h-auto">
               <Image
-                src={`${process.env.ENV_IMAGE}/images/ROS08987_8_9.jpg`}
+                src={`${getImagePath("/images/ROS08987_8_9.jpg")}`}
                 alt="Hotel Room Interior"
                 fill
                 className="object-cover"
@@ -488,12 +392,12 @@ export default function Home() {
                   </span>
                 ))}
               </div>
-              <h2 className="text-4xl md:text-5xl font-serif  mb-8">
+              <h2 className="text-4xl md:text-5xl font-serif mb-8">
                 <span className="block">Superior</span>
                 <span className="block">Triple Room</span>
               </h2>
 
-              <p className=" mb-12 text-justify">
+              <p className="mb-12 text-justify">
                 The Superior Triple Room at The Pearl Hotel is designed for families, friends, or small groups seeking a
                 spacious and comfortable stay. Offering modern amenities, stylish interiors, and ample space, this room
                 ensures a luxurious yet affordable experience in New Delhi.
@@ -525,9 +429,9 @@ export default function Home() {
         {/* Heading */}
         <h2 className="text-3xl font-serif font-bold text-center mb-8 pt-12">Our Premium Amenities</h2>
         <section
-          className="py-20 "
+          className="py-20"
           style={{
-            backgroundImage: `url('${process.env.ENV_IMAGE}/images/ROS08969_70_71.jpg')`,
+            backgroundImage: `url('${getImagePath("/images/ROS08969_70_71.jpg")}')`,
             backgroundPosition: "center",
             backgroundSize: "cover",
             backgroundRepeat: "no-repeat",
@@ -636,7 +540,7 @@ export default function Home() {
               {/* First Row */}
               <div className="relative rounded-[10px] overflow-hidden group h-[350px] shadow-md">
                 <Image
-                  src={`${process.env.ENV_IMAGE}/images/delhi-tour.jpg`}
+                  src={getImagePath("/images/delhi-tour.jpg") || "/placeholder.svg"}
                   alt="Delhi Tour"
                   fill
                   className="object-cover transition-transform duration-500 group-hover:scale-110"
@@ -652,7 +556,7 @@ export default function Home() {
 
               <div className="col-span-2 relative rounded-[10px] overflow-hidden group h-[350px] shadow-md">
                 <Image
-                  src={`${process.env.ENV_IMAGE}/images/rajasthan-tour.jpg`}
+                  src={getImagePath("/images/rajasthan-tour.jpg") || "/placeholder.svg"}
                   alt="Rajasthan Tour"
                   fill
                   className="object-cover transition-transform duration-500 group-hover:scale-110"
@@ -669,7 +573,7 @@ export default function Home() {
 
               <div className="relative rounded-[10px] overflow-hidden group h-[350px] shadow-md">
                 <Image
-                  src={`${process.env.ENV_IMAGE}/images/caption.jpg`}
+                  src={getImagePath("/images/caption.jpg") || "/placeholder.svg"}
                   alt="Udaypur Tour"
                   fill
                   className="object-cover transition-transform duration-500 group-hover:scale-110"
@@ -686,7 +590,7 @@ export default function Home() {
               {/* Second Row */}
               <div className="col-span-2 relative rounded-[10px] overflow-hidden group h-[350px] shadow-md">
                 <Image
-                  src={`${process.env.ENV_IMAGE}/images/golden-triangle.jpg`}
+                  src={getImagePath("/images/golden-triangle.jpg") || "/placeholder.svg"}
                   alt="Golden Triangle Tour"
                   fill
                   className="object-cover transition-transform duration-500 group-hover:scale-110"
@@ -702,7 +606,7 @@ export default function Home() {
 
               <div className="col-span-2 relative rounded-[10px] overflow-hidden group h-[350px] shadow-md">
                 <Image
-                  src={`${process.env.ENV_IMAGE}/images/vanarasi.jpg`}
+                  src={getImagePath("/images/vanarasi.jpg") || "/placeholder.svg"}
                   alt="Varanasi Tour"
                   fill
                   className="object-cover transition-transform duration-500 group-hover:scale-110"
@@ -748,7 +652,7 @@ export default function Home() {
               </button>
               <div className="relative w-full h-full">
                 <Image
-                  src={selectedImage || `${process.env.ENV_IMAGE}/images/placeholder.jpg`}
+                  src={selectedImage || getImagePath("/images/placeholder.jpg")}
                   alt="Enlarged gallery image"
                   width={1200}
                   height={800}
@@ -759,184 +663,15 @@ export default function Home() {
           </div>
         )}
 
-        {/* About Section */}
-        {/* <section className="py-20 bg-gray-50">
-        <div className="container mx-auto px-4">
-          <div className="flex flex-col md:flex-row items-center gap-12">
-            <div className="w-full md:w-1/2">
-              <div className="relative">
-                <div className="w-full h-[500px] relative rounded-lg overflow-hidden">
-                  <Image
-                    src="/images/ROS09257_8_9.jpg"
-                    alt="About Luxex Hotel"
-                    fill
-                    className="object-cover"
-                  />
-                </div>
-                <div className="absolute -bottom-10 -right-10 bg-white p-6 rounded-lg shadow-lg w-48 h-48 flex flex-col items-center justify-center">
-                  <span className="text-4xl font-bold text-[#b18c57]">25</span>
-                  <span className="text-gray-600 text-center">Years of Excellence</span>
-                </div>
-              </div>
-            </div>
-
-            <div className="w-full md:w-1/2">
-              
-
-              <h2 className="text-3xl md:text-4xl font-serif text-[#4a4a4a] mb-6">
-                Experience Luxury Like Never Before
-              </h2>
-
-              <p className="text-gray-600 mb-6">
-              Experience the best of Indian hospitality at Hotel The Pearl, one of the leading economy hotels in India. Our boutique hotel in New Delhi offers a blend of fine living, comfort, and affordability.
-
-
-              </p>
-
-              <p className="text-gray-600 mb-8">
-              Conveniently located in City Centre, near Connaught Place, Paharganj Market, 
-              and adjacent to the New Delhi Railway Station, our hotel provides easy access to the city and beyond.
-              </p>
-              <p className="text-gray-600 mb-8">
-              At Hotel The Pearl, we strive to deliver exceptional quality
-               and services at an affordable price. Our range of facilities and services includes:
-              </p>
-
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
-                <div className="flex items-start">
-                  <div className="w-12 h-12 bg-[#b18c57] rounded-full flex items-center justify-center text-white mr-4 flex-shrink-0">
-                    <span>01</span>
-                  </div>
-                  <div>
-                    <h3 className="font-bold mb-2">Luxury Rooms</h3>
-                    <p className="text-gray-600 text-sm">
-                      Spacious and elegantly designed rooms with premium amenities.
-                    </p>
-                  </div>
-                </div>
-
-                <div className="flex items-start">
-                  <div className="w-12 h-12 bg-[#b18c57] rounded-full flex items-center justify-center text-white mr-4 flex-shrink-0">
-                    <span>02</span>
-                  </div>
-                  <div>
-                    <h3 className="font-bold mb-2">Fine Dining</h3>
-                    <p className="text-gray-600 text-sm">Exquisite culinary experiences with world-class chefs.</p>
-                  </div>
-                </div>
-
-                <div className="flex items-start">
-                  <div className="w-12 h-12 bg-[#b18c57] rounded-full flex items-center justify-center text-white mr-4 flex-shrink-0">
-                    <span>03</span>
-                  </div>
-                  <div>
-                    <h3 className="font-bold mb-2">Premium Spa</h3>
-                    <p className="text-gray-600 text-sm">
-                      Rejuvenate your body and mind with our premium spa services.
-                    </p>
-                  </div>
-                </div>
-
-                <div className="flex items-start">
-                  <div className="w-12 h-12 bg-[#b18c57] rounded-full flex items-center justify-center text-white mr-4 flex-shrink-0">
-                    <span>04</span>
-                  </div>
-                  <div>
-                    <h3 className="font-bold mb-2">24/7 Service</h3>
-                    <p className="text-gray-600 text-sm">Round-the-clock service to cater to all your needs.</p>
-                  </div>
-                </div>
-              </div>
-
-              <Link
-                href="/about"
-                className="inline-flex items-center text-[#b18c57] font-medium uppercase tracking-wider text-sm hover:text-[#9a7848] transition-colors"
-              >
-                <span className="mr-2">LEARN MORE ABOUT US</span>
-                <ArrowRight className="w-4 h-4" />
-              </Link>
-            </div>
-          </div>
-        </div>
-      </section> */}
-
-        {/* Customer Reviews Section */}
-        {/* <section className="py-20 bg-white">
-        <div className="container mx-auto px-4">
-          <div className="text-center mb-12">
-           
-
-            <h2 className="text-3xl md:text-4xl font-serif text-[#4a4a4a] mb-6">What Our Guests Say</h2>
-
-            <p className="text-gray-600 max-w-2xl mx-auto">
-              Discover what makes our hotel special through the eyes of our valued guests. Their experiences speak
-              volumes about our commitment to excellence.
-            </p>
-          </div>
-
-          <div className="max-w-4xl mx-auto relative">
-            <div className="absolute -left-8 top-1/2 transform -translate-y-1/2 text-[#b18c57] opacity-20">
-              <Quote className="w-32 h-32" />
-            </div>
-
-            <div className="relative z-10">
-              {reviews.map((review, index) => (
-                <div
-                  key={review.id}
-                  className={`transition-opacity duration-700 ${activeReviewIndex === index ? "opacity-100" : "opacity-0 absolute inset-0"}`}
-                >
-                  <div className="bg-white rounded-xl shadow-xl p-8 md:p-12">
-                    <div className="flex flex-col md:flex-row items-center md:items-start gap-6 mb-6">
-                      <div className="flex-shrink-0">
-                        <Image
-                          src={review.image || "/placeholder.svg"}
-                          alt={review.name}
-                          width={80}
-                          height={80}
-                          className="rounded-full border-4 border-[#b18c57]"
-                        />
-                      </div>
-                      <div>
-                        <div className="flex items-center mb-2">
-                          <h3 className="text-xl font-bold mr-3">{review.name}</h3>
-                          <span className="text-sm text-gray-500">{review.location}</span>
-                        </div>
-                        <div className="flex items-center mb-1">
-                          {[...Array(review.rating)].map((_, i) => (
-                            <Star key={i} className="w-4 h-4 text-yellow-400 fill-yellow-400" />
-                          ))}
-                        </div>
-                        <p className="text-sm text-[#b18c57] italic">{review.type}</p>
-                      </div>
-                    </div>
-                    <p className="text-gray-700 italic text-lg leading-relaxed mb-4">"{review.text}"</p>
-                    <p className="text-right text-sm text-gray-500">{review.date}</p>
-                  </div>
-                </div>
-              ))}
-            </div>
-
-            <div className="flex justify-center mt-8">
-              {reviews.map((_, idx) => (
-                <button
-                  key={idx}
-                  className={`w-3 h-3 rounded-full mx-1 transition-colors ${activeReviewIndex === idx ? "bg-[#b18c57]" : "bg-gray-300"}`}
-                  onClick={() => setActiveReviewIndex(idx)}
-                ></button>
-              ))}
-            </div>
-          </div>
-        </div>
-      </section> */}
-
         {/* Contact Section */}
-        <section className="pt-20 ">
+        <section className="pt-20">
           <div className="container mx-auto px-4">
             <div className="text-center mb-12">
               <h2 className="text-3xl md:text-4xl font-serif text-[#4a4a4a] mb-6">Get In Touch</h2>
 
               <p className="text-gray-600 max-w-2xl mx-auto">
-                Have questions or need assistance? Our team is here to help you plan your perfect stay at Luxex Hotel.
+                Have questions or need assistance? Our team is here to help you plan your perfect stay at The Pearl
+                Hotel.
               </p>
             </div>
 
