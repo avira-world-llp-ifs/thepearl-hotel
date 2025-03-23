@@ -7,7 +7,7 @@ export default function HotelAbout() {
       {/* Background image */}
       <div className="absolute inset-0 w-full h-full">
         <Image
-          src="/images/ROS08603_4_5.jpg"
+          src={`${process.env.ENV_IMAGE}/images/ROS08603_4_5.jpg`}
           alt="Hotel The Pearl interior with elegant green drapes and comfortable seating"
           fill
           className="object-cover"

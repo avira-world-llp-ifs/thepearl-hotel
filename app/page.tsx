@@ -165,7 +165,7 @@ export default function Home() {
                 className="absolute inset-0 w-full h-full object-cover"
                 onEnded={() => setVideoEnded(true)}
               >
-                <source src={`${process.env.ENV_IMAGE}/images/hotel-video.mp4`} type="video/mp4" />
+                <source src={`${process.env.ENV_IMAGE}/images/herovdo.mp4`} type="video/mp4" />
                 {/* Fallback image if video doesn't load */}
                 <Image
                   src={`${process.env.ENV_IMAGE}/images/hero1.jpg`}
@@ -390,7 +390,7 @@ export default function Home() {
             {/* Left Image */}
             <div className="relative h-[400px] md:h-auto">
               <Image
-                src={`${process.env.ENV_IMAGE}/images/deluxe-room1.jpg`}
+                src={`${process.env.ENV_IMAGE}/images/ROS08849_50_51.jpg`}
                 alt="Luxury Suite View 1"
                 fill
                 className="object-cover"
@@ -427,7 +427,7 @@ export default function Home() {
             {/* Right Image */}
             <div className="relative h-[400px] md:h-auto">
               <Image
-                src={`${process.env.ENV_IMAGE}/images/deluxe-room2.jpg`}
+                src={`${process.env.ENV_IMAGE}/images/ROS08981_2_3.jpg`}
                 alt="Luxury Suite View 2"
                 fill
                 className="object-cover"
@@ -472,7 +472,7 @@ export default function Home() {
             {/* Center Image */}
             <div className="relative h-[400px] md:h-auto">
               <Image
-                src={`${process.env.ENV_IMAGE}/images/superior-double.jpg`}
+                src={`${process.env.ENV_IMAGE}/images/ROS08987_8_9.jpg`}
                 alt="Hotel Room Interior"
                 fill
                 className="object-cover"
@@ -527,7 +527,7 @@ export default function Home() {
         <section
           className="py-20 "
           style={{
-            backgroundImage: `url('${process.env.ENV_IMAGE}/images/amenities-bg.jpg')`,
+            backgroundImage: `url('${process.env.ENV_IMAGE}/images/ROS08969_70_71.jpg')`,
             backgroundPosition: "center",
             backgroundSize: "cover",
             backgroundRepeat: "no-repeat",
@@ -669,7 +669,7 @@ export default function Home() {
 
               <div className="relative rounded-[10px] overflow-hidden group h-[350px] shadow-md">
                 <Image
-                  src={`${process.env.ENV_IMAGE}/images/udaipur-tour.jpg`}
+                  src={`${process.env.ENV_IMAGE}/images/caption.jpg`}
                   alt="Udaypur Tour"
                   fill
                   className="object-cover transition-transform duration-500 group-hover:scale-110"
@@ -702,7 +702,7 @@ export default function Home() {
 
               <div className="col-span-2 relative rounded-[10px] overflow-hidden group h-[350px] shadow-md">
                 <Image
-                  src={`${process.env.ENV_IMAGE}/images/varanasi-tour.jpg`}
+                  src={`${process.env.ENV_IMAGE}/images/vanarasi.jpg`}
                   alt="Varanasi Tour"
                   fill
                   className="object-cover transition-transform duration-500 group-hover:scale-110"
@@ -1013,7 +1013,7 @@ export default function Home() {
                     <span className="sr-only">Map location of The Pearl Hotel</span>
                   </div>
                   <iframe
-                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d26430.393553120906!2d-118.43209796322542!3d34.08346478815366!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x80c2bc04d6d147ab%3A0xd6c7c379fd081ed1!2sBeverly%20Hills%2C%20CA%2090210!5e0!3m2!1sen!2sus!4v1648242349207!5m2!1sen!2sus"
+                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3501.4924854870114!2d77.21180747528953!3d28.644969075658!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x390cfd679c9500a5%3A0x7a61b946bf5f7e8c!2sHotel%20The%20Pearl!5e0!3m2!1sen!2sin!4v1742744532602!5m2!1sen!2sin"
                     width="100%"
                     height="100%"
                     style={{ border: 0 }}

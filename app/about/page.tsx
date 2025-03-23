@@ -27,7 +27,9 @@ export default function AboutPage() {
       {/* Page Title Section */}
       <section
         className="relative h-[400px] bg-cover bg-center"
-        style={{ backgroundImage: "url('https://images.unsplash.com/photo-1566073771259-6a8506099945?q=80&w=2070')" }}
+        style={{
+          backgroundImage: `url('${process.env.ENV_IMAGE}/images/ROS08903_4_5.jpg')`,
+        }}
       >
         <div className="absolute inset-0 bg-black/50"></div>
         <div className="container mx-auto px-4 h-full flex flex-col justify-center items-center relative z-10 text-center">
@@ -50,7 +52,7 @@ export default function AboutPage() {
               <div className="relative">
                 <div className="w-full h-[500px] relative rounded-lg overflow-hidden">
                   <Image
-                    src="https://images.unsplash.com/photo-1566073771259-6a8506099945?q=80&w=2070"
+                    src={`${process.env.ENV_IMAGE}/images/ROS08981_2_3.jpg`}
                     alt="Luxex Hotel History"
                     fill
                     className="object-cover"
@@ -92,7 +94,7 @@ export default function AboutPage() {
               <div className="flex items-center mb-8">
                 <div className="w-20 h-20 rounded-full overflow-hidden mr-6">
                   <Image
-                    src="https://images.unsplash.com/photo-1566073771259-6a8506099945?q=80&w=2070"
+                    src={`${process.env.ENV_IMAGE}/images/ROS08981_2_3.jpg`}
                     alt="Jonathan Dawson"
                     width={100}
                     height={100}
@@ -377,7 +379,7 @@ export default function AboutPage() {
             <div className="bg-white p-8 rounded-lg shadow-md text-center">
               <div className="w-20 h-20 mx-auto mb-6">
                 <Image
-                  src="https://images.unsplash.com/photo-1566073771259-6a8506099945?q=80&w=2070"
+                  src={`${process.env.ENV_IMAGE}/images/ROS08981_2_3.jpg`}
                   alt="Five Star Award"
                   width={100}
                   height={100}
@@ -392,7 +394,7 @@ export default function AboutPage() {
             <div className="bg-white p-8 rounded-lg shadow-md text-center">
               <div className="w-20 h-20 mx-auto mb-6">
                 <Image
-                  src="https://images.unsplash.com/photo-1566073771259-6a8506099945?q=80&w=2070"
+                  src={`${process.env.ENV_IMAGE}/images/ROS08819_20_21.jpg`}
                   alt="Best Luxury Hotel"
                   width={100}
                   height={100}
@@ -407,7 +409,7 @@ export default function AboutPage() {
             <div className="bg-white p-8 rounded-lg shadow-md text-center">
               <div className="w-20 h-20 mx-auto mb-6">
                 <Image
-                  src="https://images.unsplash.com/photo-1566073771259-6a8506099945?q=80&w=2070"
+                  src={`${process.env.ENV_IMAGE}/images/ROS09257_8_9.jpg`}
                   alt="Michelin Star"
                   width={100}
                   height={100}
@@ -422,7 +424,7 @@ export default function AboutPage() {
             <div className="bg-white p-8 rounded-lg shadow-md text-center">
               <div className="w-20 h-20 mx-auto mb-6">
                 <Image
-                  src="https://images.unsplash.com/photo-1566073771259-6a8506099945?q=80&w=2070"
+                  src={`${process.env.ENV_IMAGE}/images/ROS08969_70_71.jpg`}
                   alt="Sustainability Excellence"
                   width={100}
                   height={100}
@@ -504,7 +506,7 @@ export default function AboutPage() {
                 <div className="space-y-4">
                   <div className="h-[200px] relative rounded-lg overflow-hidden">
                     <Image
-                      src="https://images.unsplash.com/photo-1566073771259-6a8506099945?q=80&w=2070"
+                      src={`${process.env.ENV_IMAGE}/images/ROS08969_70_71.jpg`}
                       alt="Luxex Spa"
                       fill
                       className="object-cover"
@@ -512,7 +514,7 @@ export default function AboutPage() {
                   </div>
                   <div className="h-[250px] relative rounded-lg overflow-hidden">
                     <Image
-                      src="https://images.unsplash.com/photo-1566073771259-6a8506099945?q=80&w=2070"
+                      src={`${process.env.ENV_IMAGE}/images/ROS08921_2_3.jpg`}
                       alt="Luxex Restaurant"
                       fill
                       className="object-cover"
@@ -522,7 +524,7 @@ export default function AboutPage() {
                 <div className="space-y-4 mt-8">
                   <div className="h-[250px] relative rounded-lg overflow-hidden">
                     <Image
-                      src="https://images.unsplash.com/photo-1566073771259-6a8506099945?q=80&w=2070"
+                      src={`${process.env.ENV_IMAGE}/images/ROS08930_1_2.jpg`}
                       alt="Luxex Pool"
                       fill
                       className="object-cover"
@@ -530,7 +532,7 @@ export default function AboutPage() {
                   </div>
                   <div className="h-[200px] relative rounded-lg overflow-hidden">
                     <Image
-                      src="https://images.unsplash.com/photo-1566073771259-6a8506099945?q=80&w=2070"
+                      src={`${process.env.ENV_IMAGE}/images/ROS08957_8_9.jpg`}
                       alt="Luxex Concierge"
                       fill
                       className="object-cover"
@@ -546,8 +548,7 @@ export default function AboutPage() {
       {/* Call to Action */}
       <section
         className="py-20 bg-cover bg-center relative"
-        style={{ backgroundImage: "url('https://images.unsplash.com/photo-1566073771259-6a8506099945?q=80&w=2070')" }}
-      >
+        style={{backgroundImage: `url('${process.env.ENV_IMAGE}/images/ROS09194_5_6.jpg')`,}}      >
         <div className="absolute inset-0 bg-black/70"></div>
         <div className="container mx-auto px-4 relative z-10 text-center">
           <h2 className="text-3xl md:text-4xl font-serif text-white mb-6">Experience the Epitome of Luxury</h2>

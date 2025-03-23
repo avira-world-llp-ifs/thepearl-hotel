@@ -16,33 +16,35 @@ export default function RoomSlider() {
   const [selectedImage, setSelectedImage] = useState<string | null>(null)
 
   // Sample gallery images - replace with your actual data
-  const galleryImages = [
-    {
-      src: "/images/ROS08981_2_3.jpg?height=750&width=1000&text=Luxury+Suite",
-      alt: "Luxury Suite",
-      caption: "Luxury Suite",
-    },
-    {
-      src: "/images/ROS08849_50_51.jpg?height=750&width=1000&text=Deluxe+Room",
-      alt: "Deluxe Room",
-      caption: "Deluxe Room",
-    },
-    {
-      src: "/images/ROS08936_7_8.jpg?height=750&width=1000&text=Executive+Suite",
-      alt: "Executive Suite",
-      caption: "Executive Suite",
-    },
-    {
-      src: "/images/ROS08900_1_2.jpg?height=750&width=1000&text=Presidential+Suite",
-      alt: "Presidential Suite",
-      caption: "Presidential Suite",
-    },
-    {
-      src: "/images/ROS08819_20_21.jpg?height=750&width=1000&text=Family+Room",
-      alt: "Family Room",
-      caption: "Family Room",
-    },
-  ]
+  const baseUrl = process.env.ENV_IMAGE;
+
+const galleryImages = [
+  {
+    src: `${baseUrl}/images/ROS08981_2_3.jpg?height=750&width=1000&text=Luxury+Suite`,
+    alt: "Luxury Suite",
+    caption: "Luxury Suite",
+  },
+  {
+    src: `${baseUrl}/images/ROS08849_50_51.jpg?height=750&width=1000&text=Deluxe+Room`,
+    alt: "Deluxe Room",
+    caption: "Deluxe Room",
+  },
+  {
+    src: `${baseUrl}/images/ROS08936_7_8.jpg?height=750&width=1000&text=Executive+Suite`,
+    alt: "Executive Suite",
+    caption: "Executive Suite",
+  },
+  {
+    src: `${baseUrl}/images/ROS08900_1_2.jpg?height=750&width=1000&text=Presidential+Suite`,
+    alt: "Presidential Suite",
+    caption: "Presidential Suite",
+  },
+  {
+    src: `${baseUrl}/images/ROS08819_20_21.jpg?height=750&width=1000&text=Family+Room`,
+    alt: "Family Room",
+    caption: "Family Room",
+  },
+];
 
   return (
     <section className="pt-10 ">
@@ -140,7 +142,7 @@ export default function RoomSlider() {
 
         <div className="text-center mt-12">
           <Link
-            href="/#"
+            href="/gallery"
             className="inline-block border-2 border-[#b18c57] text-[#b18c57] px-8 py-3 rounded-full hover:bg-[#b18c57] hover:text-white transition-colors"
           >
             VIEW FULL GALLERY

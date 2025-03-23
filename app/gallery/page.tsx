@@ -21,10 +21,12 @@ export default function GalleryPage() {
   ]
 
   // Gallery images
+  const baseUrl = process.env.ENV_IMAGE;
+
   const galleryImages = [
     {
       id: 1,
-      src: "https://images.unsplash.com/photo-1566073771259-6a8506099945?q=80&w=2070",
+      src: `${baseUrl}/images/ROS08996_7_8.jpg`,
       alt: "Luxury Suite",
       title: "Luxury Suite",
       description: "Our spacious luxury suite with king-size bed and panoramic views.",
@@ -32,7 +34,7 @@ export default function GalleryPage() {
     },
     {
       id: 2,
-      src: "https://images.unsplash.com/photo-1566073771259-6a8506099945?q=80&w=2070",
+      src: `${baseUrl}/images/ROS08972_3_4.jpg`,
       alt: "Deluxe Room",
       title: "Deluxe Room",
       description: "Elegant deluxe room with modern amenities and comfortable furnishings.",
@@ -40,7 +42,7 @@ export default function GalleryPage() {
     },
     {
       id: 3,
-      src: "https://images.unsplash.com/photo-1566073771259-6a8506099945?q=80&w=2070",
+      src: `${baseUrl}/images/ROS08981_2_3.jpg`,
       alt: "Premium Suite",
       title: "Premium Suite",
       description: "Premium suite featuring a separate living area and luxurious bathroom.",
@@ -48,7 +50,7 @@ export default function GalleryPage() {
     },
     {
       id: 4,
-      src: "https://images.unsplash.com/photo-1566073771259-6a8506099945?q=80&w=2070",
+      src: `${baseUrl}/images/ROS08915_6_7.jpg`,
       alt: "Executive Room",
       title: "Executive Room",
       description: "Sophisticated executive room designed for both comfort and productivity.",
@@ -56,7 +58,7 @@ export default function GalleryPage() {
     },
     {
       id: 5,
-      src: "https://images.unsplash.com/photo-1566073771259-6a8506099945?q=80&w=2070",
+      src: `${baseUrl}/images/ROS08921_2_3.jpg`,
       alt: "Main Restaurant",
       title: "The Pearl Restaurant",
       description: "Our elegant main restaurant serving international cuisine with a local twist.",
@@ -64,7 +66,7 @@ export default function GalleryPage() {
     },
     {
       id: 6,
-      src: "https://images.unsplash.com/photo-1566073771259-6a8506099945?q=80&w=2070",
+      src: `${baseUrl}/images/ROS08957_8_9.jpg`,
       alt: "Hotel Bar",
       title: "Skyline Bar",
       description: "Sophisticated bar offering craft cocktails and panoramic city views.",
@@ -72,7 +74,7 @@ export default function GalleryPage() {
     },
     {
       id: 7,
-      src: "https://images.unsplash.com/photo-1566073771259-6a8506099945?q=80&w=2070",
+      src: `${baseUrl}/images/ROS09164_5_6.jpg`,
       alt: "Swimming Pool",
       title: "Infinity Pool",
       description: "Our stunning infinity pool overlooking the city skyline.",
@@ -80,7 +82,7 @@ export default function GalleryPage() {
     },
     {
       id: 8,
-      src: "https://images.unsplash.com/photo-1566073771259-6a8506099945?q=80&w=2070",
+      src: `${baseUrl}/images/ROS08894_5_6.jpg`,
       alt: "Spa Treatment Room",
       title: "Serenity Spa",
       description: "Luxurious spa treatment room for ultimate relaxation and rejuvenation.",
@@ -88,7 +90,7 @@ export default function GalleryPage() {
     },
     {
       id: 9,
-      src: "https://images.unsplash.com/photo-1566073771259-6a8506099945?q=80&w=2070",
+      src: `${baseUrl}/images/ROS08831_2_3.jpg`,
       alt: "Fitness Center",
       title: "Fitness Center",
       description: "State-of-the-art fitness center with the latest equipment.",
@@ -96,7 +98,7 @@ export default function GalleryPage() {
     },
     {
       id: 10,
-      src: "https://images.unsplash.com/photo-1566073771259-6a8506099945?q=80&w=2070",
+      src: `${baseUrl}/images/ROS08807_8_9.jpg`,
       alt: "Conference Room",
       title: "Grand Ballroom",
       description: "Elegant venue for conferences, weddings, and special events.",
@@ -104,7 +106,7 @@ export default function GalleryPage() {
     },
     {
       id: 11,
-      src: "https://images.unsplash.com/photo-1566073771259-6a8506099945?q=80&w=2070",
+      src: `${baseUrl}/images/ROS08750_1_2.jpg`,
       alt: "Wedding Setup",
       title: "Wedding Venue",
       description: "Beautiful setup for a dream wedding ceremony and reception.",
@@ -112,13 +114,14 @@ export default function GalleryPage() {
     },
     {
       id: 12,
-      src: "https://images.unsplash.com/photo-1566073771259-6a8506099945?q=80&w=2070",
+      src: `${baseUrl}/images/ROS08732_3_4.jpg`,
       alt: "Delhi Tour",
       title: "Delhi Exploration",
       description: "Discover the rich history and vibrant culture of Delhi.",
       category: "events",
     },
-  ]
+  ];
+  
 
   return (
     <div className="container mx-auto px-4 py-12">
@@ -133,11 +136,11 @@ export default function GalleryPage() {
       {/* Featured Video Section */}
       <div className="mb-16">
         <div className="relative aspect-video w-full overflow-hidden rounded-xl">
-          <Image
-            src="https://images.unsplash.com/photo-1566073771259-6a8506099945?q=80&w=2070"
-            alt="Hotel Video Thumbnail"
-            fill
-            className="object-cover"
+        <Image
+          src={`${baseUrl}/images/ROS08732_3_4.jpg`}
+          alt="Hotel Video Thumbnail"
+          fill
+          className="object-cover"
           />
           <div className="absolute inset-0 bg-black/30 flex items-center justify-center">
             <Button size="lg" className="rounded-full h-16 w-16 flex items-center justify-center">
