@@ -11,9 +11,9 @@ import { AuthProvider } from "@/components/auth-provider"
 const inter = Inter({ subsets: ["latin"] })
 
 export const metadata: Metadata = {
-  title: "LuxStay - Luxury Hotel Booking",
+  title: "The Pearl",
   description: "Book your stay at the most luxurious hotels around the world.",
-  generator: "v0.dev",
+  generator: "aviraworld",
 }
 
 export default function RootLayout({

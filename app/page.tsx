@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useEffect } from "react"
+import { useState, useEffect, useRef } from "react"
 import Image from "next/image"
 import Link from "next/link"
 import { X, Phone, Mail, MapPin, Facebook, Twitter, Instagram, ChevronUp, MapPinned, Check } from "lucide-react"
@@ -17,10 +17,13 @@ const montserrat = Montserrat({
   variable: "--font-montserrat",
 })
 
+// Add this after the montserrat constant definition
+// Add this after the montserrat constant definition
+
 // Custom HotelAbout component directly in page.tsx
 function HotelAbout() {
   return (
-    <div className="relative w-full h-[700px] md:h-[650px] lg:h-[750px]">
+    <div className={`relative w-full h-[700px] md:h-[650px] lg:h-[750px] ${montserrat.className}`}>
       {/* Background image */}
       <div className="absolute inset-0 w-full h-full">
         <Image
@@ -34,21 +37,35 @@ function HotelAbout() {
 
       {/* White card with content that overlaps the image */}
       <div className="absolute left-0 top-1/2 -translate-y-1/2 w-[97%] md:w-[70%] lg:w-[60%] bg-white p-6 md:p-10 rounded-r-3xl shadow-lg">
-        <h1 className="text-3xl md:text-4xl font-bold text-center mb-4 md:mb-6">About Hotel The Pearl</h1>
+        <h1
+          className="text-3xl md:text-4xl font-bold text-center mb-4 md:mb-6 font-[var(--font-montserrat)]"
+          style={{ fontFamily: "var(--font-montserrat)" }}
+        >
+          About Hotel The Pearl
+        </h1>
 
-        <p className="text-gray-700 text-center text-sm md:text-base mb-4">
+        <p
+          className="text-gray-700 text-center text-sm md:text-base mb-4"
+          style={{ fontFamily: "var(--font-montserrat)" }}
+        >
           Experience the best of Indian hospitality at Hotel The Pearl, one of the leading economy hotels in India. Our
           boutique hotel in New Delhi offers a blend of fine living, comfort, and affordability.
         </p>
 
-        <p className="text-gray-700 text-center text-sm md:text-base mb-4">
+        <p
+          className="text-gray-700 text-center text-sm md:text-base mb-4"
+          style={{ fontFamily: "var(--font-montserrat)" }}
+        >
           Conveniently located in City Centre, near Connaught Place, Paharganj Market, and adjacent to the New Delhi
           Railway Station, our hotel provides easy access to the city and beyond.
         </p>
 
         {/* Features section */}
         <div className="mt-8 w-full max-w-6xl mx-auto px-6">
-          <h2 className="text-center text-xl md:text-2xl font-medium text-[#F8AFA6]">
+          <h2
+            className="text-center text-xl md:text-2xl font-medium text-[#F8AFA6]"
+            style={{ fontFamily: "var(--font-montserrat)" }}
+          >
             DESTINATION FOR MEMORABLE EXPERIENCES
           </h2>
 
@@ -57,14 +74,18 @@ function HotelAbout() {
               <div className="w-20 h-20 rounded-full bg-[#f9f5f2] flex items-center justify-center mb-2">
                 <Check className="text-[#e9a8a1] w-8 h-8" />
               </div>
-              <p className="text-gray-700 font-medium text-lg">Best Amenities</p>
+              <p className="text-gray-700 font-medium text-lg" style={{ fontFamily: "var(--font-montserrat)" }}>
+                Best Amenities
+              </p>
             </div>
 
             <div className="flex flex-col items-center">
               <div className="w-20 h-20 rounded-full bg-[#f9f5f2] flex items-center justify-center mb-2">
                 <Check className="text-[#e9a8a1] w-8 h-8" />
               </div>
-              <p className="text-gray-700 font-medium text-lg">Luxury Rooms</p>
+              <p className="text-gray-700 font-medium text-lg" style={{ fontFamily: "var(--font-montserrat)" }}>
+                Luxury Rooms
+              </p>
             </div>
           </div>
 
@@ -72,6 +93,7 @@ function HotelAbout() {
             <button
               className="bg-[#1e1e2d] text-white px-12 py-4 uppercase text-sm tracking-wider hover:bg-[#2a2a3d] transition-colors"
               onClick={() => (window.location.href = "/rooms")}
+              style={{ fontFamily: "var(--font-montserrat)" }}
             >
               BOOK NOW
             </button>
@@ -91,11 +113,37 @@ export default function Home() {
   const [videoEnded, setVideoEnded] = useState(false) // Set to false to play video first
   const [currentSlide, setCurrentSlide] = useState(0)
   const [imagePath, setImagePath] = useState("")
+  const fontApplied = useRef(false)
 
   useEffect(() => {
     // Set the base image path from environment variable
     const baseUrl = process.env.NEXT_PUBLIC_ENV_IMAGE || ""
     setImagePath(baseUrl)
+  }, [])
+
+  useEffect(() => {
+    if (!fontApplied.current) {
+      // Apply Montserrat font to all elements via CSS
+      document.documentElement.style.setProperty("font-family", "var(--font-montserrat), sans-serif")
+
+      // Add a style tag to ensure all elements use Montserrat
+      const style = document.createElement("style")
+      style.textContent = `
+        * {
+          font-family: var(--font-montserrat), sans-serif !important;
+        }
+        h1, h2, h3, h4, h5, h6, p, span, a, button, input, textarea, select, label {
+          font-family: var(--font-montserrat), sans-serif !important;
+        }
+      `
+      document.head.appendChild(style)
+
+      fontApplied.current = true // Mark that the font has been applied
+
+      return () => {
+        document.head.removeChild(style)
+      }
+    }
   }, [])
 
   // Direct paths to images in the public directory
@@ -225,12 +273,7 @@ export default function Home() {
 
   return (
     <>
-      <style jsx global>{`
-        * {
-          font-family: 'Montserrat', sans-serif !important;
-        }
-      `}</style>
-      <div className={`min-h-screen bg-white ${montserrat.className}`}>
+      <div className={`min-h-screen bg-white ${montserrat.className}`} style={{ fontFamily: "var(--font-montserrat)" }}>
         <div className="mx-auto max-w-[1440px]">
           {/* Full-Page Video/Slider Hero Section */}
           <section className="relative h-screen w-full overflow-hidden">
@@ -253,6 +296,7 @@ export default function Home() {
                 <button
                   onClick={() => setVideoEnded(true)}
                   className="absolute bottom-10 right-10 bg-white/20 hover:bg-white/40 text-white px-4 py-2 rounded-full z-20 transition-colors"
+                  style={{ fontFamily: "var(--font-montserrat)" }}
                 >
                   Skip Intro
                 </button>
@@ -269,13 +313,23 @@ export default function Home() {
               <div className="max-w-3xl">
                 <div className="flex items-center justify-center gap-4 mb-6">
                   <div className="h-[1px] w-12 bg-gray-300"></div>
-                  <span className="text-gray-300 uppercase text-sm tracking-wider">WELCOME TO THE PEARL</span>
+                  <span
+                    className="text-gray-300 uppercase text-sm tracking-wider"
+                    style={{ fontFamily: "var(--font-montserrat)" }}
+                  >
+                    WELCOME TO THE PEARL
+                  </span>
                   <div className="h-[1px] w-12 bg-gray-300"></div>
                 </div>
 
-                <h1 className="text-5xl md:text-7xl font-medium mb-6">Experience True Luxury</h1>
+                <h1 className="text-5xl md:text-7xl font-medium mb-6" style={{ fontFamily: "var(--font-montserrat)" }}>
+                  Experience True Luxury
+                </h1>
 
-                <p className="text-xl text-gray-200 mb-12 max-w-2xl mx-auto">
+                <p
+                  className="text-xl text-gray-200 mb-12 max-w-2xl mx-auto"
+                  style={{ fontFamily: "var(--font-montserrat)" }}
+                >
                   Indulge in the epitome of elegance and comfort at our premium hotel. Where every moment becomes a
                   cherished memory.
                 </p>
@@ -284,12 +338,14 @@ export default function Home() {
                   <Link
                     href="/rooms"
                     className="bg-[#b18c57] text-white px-8 py-4 rounded-full hover:bg-[#9a7848] transition-colors text-lg"
+                    style={{ fontFamily: "var(--font-montserrat)" }}
                   >
                     BOOK YOUR STAY
                   </Link>
                   <Link
                     href="/about"
                     className="border-2 border-white text-white px-8 py-4 rounded-full hover:bg-white hover:text-black transition-colors text-lg"
+                    style={{ fontFamily: "var(--font-montserrat)" }}
                   >
                     DISCOVER MORE
                   </Link>
@@ -304,7 +360,12 @@ export default function Home() {
           <section className="bg-white">
             {/* Heading Section */}
             <div className="text-center py-16 bg-white">
-              <h1 className="text-4xl md:text-5xl font-medium text-gray-800 mb-4">ROOMS AND SUITES</h1>
+              <h1
+                className="text-4xl md:text-5xl font-medium text-gray-800 mb-4"
+                style={{ fontFamily: "var(--font-montserrat)" }}
+              >
+                ROOMS AND SUITES
+              </h1>
               <div className="w-20 h-1 bg-[#e9a8a1] mx-auto"></div>
             </div>
             <div className="grid grid-cols-1 md:grid-cols-3">
@@ -328,11 +389,11 @@ export default function Home() {
                   ))}
                 </div>
 
-                <h2 className="text-4xl md:text-5xl font-medium mb-8">
+                <h2 className="text-4xl md:text-5xl font-medium mb-8" style={{ fontFamily: "var(--font-montserrat)" }}>
                   <span className="block">Deluxe Room</span>
                 </h2>
 
-                <p className="text-justify mb-8">
+                <p className="text-justify mb-8" style={{ fontFamily: "var(--font-montserrat)" }}>
                   Our Deluxe Rooms offer an elevated stay experience with spacious interiors, elegant décor, and modern
                   amenities designed for ultimate comfort. Whether you're visiting for business or leisure, these rooms
                   provide a perfect blend of luxury and affordability.
@@ -340,6 +401,7 @@ export default function Home() {
                 <Link
                   href="/rooms"
                   className="border border-gray-300 rounded-full text-sm px-8 py-3 bg-transparent hover:bg-[#DAA520] hover:text-white transition-colors"
+                  style={{ fontFamily: "var(--font-montserrat)" }}
                 >
                   DETAILS
                 </Link>
@@ -369,12 +431,12 @@ export default function Home() {
                     </span>
                   ))}
                 </div>
-                <h2 className="text-4xl md:text-5xl font-medium mb-8">
+                <h2 className="text-4xl md:text-5xl font-medium mb-8" style={{ fontFamily: "var(--font-montserrat)" }}>
                   <span className="block">Superior</span>
                   <span className="block">Double Room</span>
                 </h2>
 
-                <p className="mb-12 text-justify">
+                <p className="mb-12 text-justify" style={{ fontFamily: "var(--font-montserrat)" }}>
                   The Superior Double Room at The Pearl Hotel offers a perfect mix of comfort, elegance, and
                   convenience. Designed for both leisure and business travelers, this room provides a spacious and
                   serene retreat in the heart of New Delhi.
@@ -384,6 +446,7 @@ export default function Home() {
                   <Link
                     href="/rooms"
                     className="border border-gray-300 rounded-full text-sm px-8 py-3 bg-transparent hover:bg-[#DAA520] hover:text-white transition-colors"
+                    style={{ fontFamily: "var(--font-montserrat)" }}
                   >
                     DETAILS
                   </Link>
@@ -409,12 +472,12 @@ export default function Home() {
                     </span>
                   ))}
                 </div>
-                <h2 className="text-4xl md:text-5xl font-medium mb-8">
+                <h2 className="text-4xl md:text-5xl font-medium mb-8" style={{ fontFamily: "var(--font-montserrat)" }}>
                   <span className="block">Superior</span>
                   <span className="block">Triple Room</span>
                 </h2>
 
-                <p className="mb-12 text-justify">
+                <p className="mb-12 text-justify" style={{ fontFamily: "var(--font-montserrat)" }}>
                   The Superior Triple Room at The Pearl Hotel is designed for families, friends, or small groups seeking
                   a spacious and comfortable stay. Offering modern amenities, stylish interiors, and ample space, this
                   room ensures a luxurious yet affordable experience in New Delhi.
@@ -424,6 +487,7 @@ export default function Home() {
                   <Link
                     href="/rooms"
                     className="border border-gray-300 rounded-full text-sm px-8 py-3 bg-transparent hover:bg-[#DAA520] hover:text-white transition-colors"
+                    style={{ fontFamily: "var(--font-montserrat)" }}
                   >
                     DETAILS
                   </Link>
@@ -436,6 +500,7 @@ export default function Home() {
               <button
                 onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
                 className="bg-black rounded-full p-3 text-white hover:bg-gray-800 transition-colors"
+                style={{ fontFamily: "var(--font-montserrat)" }}
               >
                 <ChevronUp className="w-5 h-5" />
               </button>
@@ -444,7 +509,12 @@ export default function Home() {
 
           {/* Amenities Icons Section */}
           {/* Heading */}
-          <h2 className="text-3xl font-medium font-bold text-center mb-8 pt-12">Our Premium Amenities</h2>
+          <h2
+            className="text-3xl font-medium font-bold text-center mb-8 pt-12"
+            style={{ fontFamily: "var(--font-montserrat)" }}
+          >
+            Our Premium Amenities
+          </h2>
           <section
             className="py-20"
             style={{
@@ -466,7 +536,9 @@ export default function Home() {
                       <circle cx="44" cy="38" r="2" />
                     </svg>
                   </div>
-                  <h3 className="text-lg font-medium text-gray-800">Transportations</h3>
+                  <h3 className="text-lg font-medium text-gray-800" style={{ fontFamily: "var(--font-montserrat)" }}>
+                    Transportations
+                  </h3>
                 </div>
 
                 {/* SPA & GYM */}
@@ -478,7 +550,9 @@ export default function Home() {
                       <path d="M50,36H14c-1.1,0-2,0.9-2,2v6c0,1.1,0.9,2,2,2h36c1.1,0,2-0.9,2-2v-6C52,36.9,51.1,36,50,36z M48,42H16v-2h32V42z" />
                     </svg>
                   </div>
-                  <h3 className="text-lg font-medium text-gray-800">SPA & GYM</h3>
+                  <h3 className="text-lg font-medium text-gray-800" style={{ fontFamily: "var(--font-montserrat)" }}>
+                    SPA & GYM
+                  </h3>
                 </div>
 
                 {/* Fast Wifi */}
@@ -493,7 +567,9 @@ export default function Home() {
                       <path d="M32,16c-4.4,0-8,3.6-8,8h4c0-2.2,1.8-4,4-4s4,1.8,4,4h4C40,19.6,36.4,16,32,16z" />
                     </svg>
                   </div>
-                  <h3 className="text-lg font-medium text-gray-800">Fast Wifi</h3>
+                  <h3 className="text-lg font-medium text-gray-800" style={{ fontFamily: "var(--font-montserrat)" }}>
+                    Fast Wifi
+                  </h3>
                 </div>
 
                 {/* Food & Drink */}
@@ -506,7 +582,9 @@ export default function Home() {
                       <path d="M46,36H18c-1.1,0-2,0.9-2,2v16c0,1.1,0.9,2,2,2h28c1.1,0,2-0.9,2-2V38C48,36.9,47.1,36,46,36z M44,52H20V40h24V52z" />
                     </svg>
                   </div>
-                  <h3 className="text-lg font-medium text-gray-800">Food & Drink</h3>
+                  <h3 className="text-lg font-medium text-gray-800" style={{ fontFamily: "var(--font-montserrat)" }}>
+                    Food & Drink
+                  </h3>
                 </div>
 
                 {/* Bathtub */}
@@ -519,7 +597,9 @@ export default function Home() {
                       <path d="M46,54c-1.1,0-2,0.9-2,2s0.9,2,2,2s2-0.9,2-2S47.1,54,46,54z" />
                     </svg>
                   </div>
-                  <h3 className="text-lg font-medium text-gray-800">Bathtub</h3>
+                  <h3 className="text-lg font-medium text-gray-800" style={{ fontFamily: "var(--font-montserrat)" }}>
+                    Bathtub
+                  </h3>
                 </div>
 
                 {/* Swimming-pool */}
@@ -539,7 +619,9 @@ export default function Home() {
                       <path d="M42,16c-1.1,0-2,0.9-2,2v6c0,1.1,0.9,2,2,2s2-0.9,2-2v-6C44,16.9,43.1,16,42,16z" />
                     </svg>
                   </div>
-                  <h3 className="text-lg font-medium text-gray-800">Swimming-pool</h3>
+                  <h3 className="text-lg font-medium text-gray-800" style={{ fontFamily: "var(--font-montserrat)" }}>
+                    Swimming-pool
+                  </h3>
                 </div>
               </div>
             </div>
@@ -549,8 +631,13 @@ export default function Home() {
           <section className="pt-10 bg-white">
             <div className="container mx-auto px-4">
               <div className="text-center mb-12">
-                <h2 className="text-3xl md:text-4xl font-medium text-[#4a4a4a] mb-6">Tour Package</h2>
-                <p className="text-gray-600 max-w-2xl mx-auto">
+                <h2
+                  className="text-3xl md:text-4xl font-medium text-[#4a4a4a] mb-6"
+                  style={{ fontFamily: "var(--font-montserrat)" }}
+                >
+                  Tour Package
+                </h2>
+                <p className="text-gray-600 max-w-2xl mx-auto" style={{ fontFamily: "var(--font-montserrat)" }}>
                   Discover breathtaking destinations and unforgettable experiences around our hotel. Our concierge can
                   arrange exclusive tours and activities for you.
                 </p>
@@ -566,11 +653,19 @@ export default function Home() {
                     className="object-cover transition-transform duration-500 group-hover:scale-110"
                   />
                   <div className="absolute inset-0 bg-gradient-to-b from-transparent to-black/70"></div>
-                  <div className="absolute top-4 right-4 bg-[#ff6b52] text-white text-sm font-medium px-4 py-1 rounded-full">
+                  <div
+                    className="absolute top-4 right-4 bg-[#ff6b52] text-white text-sm font-medium px-4 py-1 rounded-full"
+                    style={{ fontFamily: "var(--font-montserrat)" }}
+                  >
                     4 TOURS
                   </div>
                   <div className="absolute bottom-6 left-6">
-                    <h3 className="text-xl md:text-2xl font-bold text-white">DELHI TOUR</h3>
+                    <h3
+                      className="text-xl md:text-2xl font-bold text-white"
+                      style={{ fontFamily: "var(--font-montserrat)" }}
+                    >
+                      DELHI TOUR
+                    </h3>
                   </div>
                 </div>
 
@@ -582,12 +677,25 @@ export default function Home() {
                     className="object-cover transition-transform duration-500 group-hover:scale-110"
                   />
                   <div className="absolute inset-0 bg-gradient-to-b from-transparent to-black/70"></div>
-                  <div className="absolute top-4 right-4 bg-[#ff6b52] text-white text-sm font-medium px-4 py-1 rounded-full">
+                  <div
+                    className="absolute top-4 right-4 bg-[#ff6b52] text-white text-sm font-medium px-4 py-1 rounded-full"
+                    style={{ fontFamily: "var(--font-montserrat)" }}
+                  >
                     6 TOURS
                   </div>
                   <div className="absolute bottom-6 left-6">
-                    <p className="text-[#ff6b52] italic font-medium mb-1">Wildlife</p>
-                    <h3 className="text-2xl md:text-3xl font-bold text-white">RAJASTHAN TOUR</h3>
+                    <p
+                      className="text-[#ff6b52] italic font-medium mb-1"
+                      style={{ fontFamily: "var(--font-montserrat)" }}
+                    >
+                      Wildlife
+                    </p>
+                    <h3
+                      className="text-2xl md:text-3xl font-bold text-white"
+                      style={{ fontFamily: "var(--font-montserrat)" }}
+                    >
+                      RAJASTHAN TOUR
+                    </h3>
                   </div>
                 </div>
 
@@ -599,11 +707,19 @@ export default function Home() {
                     className="object-cover transition-transform duration-500 group-hover:scale-110"
                   />
                   <div className="absolute inset-0 bg-gradient-to-b from-transparent to-black/70"></div>
-                  <div className="absolute top-4 right-4 bg-[#ff6b52] text-white text-sm font-medium px-4 py-1 rounded-full">
+                  <div
+                    className="absolute top-4 right-4 bg-[#ff6b52] text-white text-sm font-medium px-4 py-1 rounded-full"
+                    style={{ fontFamily: "var(--font-montserrat)" }}
+                  >
                     3 TOURS
                   </div>
                   <div className="absolute bottom-6 left-6">
-                    <h3 className="text-xl md:text-2xl font-bold text-white">UDAYPUR TOUR</h3>
+                    <h3
+                      className="text-xl md:text-2xl font-bold text-white"
+                      style={{ fontFamily: "var(--font-montserrat)" }}
+                    >
+                      UDAYPUR TOUR
+                    </h3>
                   </div>
                 </div>
 
@@ -616,11 +732,19 @@ export default function Home() {
                     className="object-cover transition-transform duration-500 group-hover:scale-110"
                   />
                   <div className="absolute inset-0 bg-gradient-to-b from-transparent to-black/70"></div>
-                  <div className="absolute top-4 right-4 bg-[#ff6b52] text-white text-sm font-medium px-4 py-1 rounded-full">
+                  <div
+                    className="absolute top-4 right-4 bg-[#ff6b52] text-white text-sm font-medium px-4 py-1 rounded-full"
+                    style={{ fontFamily: "var(--font-montserrat)" }}
+                  >
                     3 TOURS
                   </div>
                   <div className="absolute bottom-6 left-6">
-                    <h3 className="text-2xl md:text-3xl font-bold text-white">GOLDEN TRIANGLE TOUR</h3>
+                    <h3
+                      className="text-2xl md:text-3xl font-bold text-white"
+                      style={{ fontFamily: "var(--font-montserrat)" }}
+                    >
+                      GOLDEN TRIANGLE TOUR
+                    </h3>
                   </div>
                 </div>
 
@@ -632,11 +756,19 @@ export default function Home() {
                     className="object-cover transition-transform duration-500 group-hover:scale-110"
                   />
                   <div className="absolute inset-0 bg-gradient-to-b from-transparent to-black/70"></div>
-                  <div className="absolute top-4 right-4 bg-[#ff6b52] text-white text-sm font-medium px-4 py-1 rounded-full">
+                  <div
+                    className="absolute top-4 right-4 bg-[#ff6b52] text-white text-sm font-medium px-4 py-1 rounded-full"
+                    style={{ fontFamily: "var(--font-montserrat)" }}
+                  >
                     3 TOURS
                   </div>
                   <div className="absolute bottom-6 left-6">
-                    <h3 className="text-2xl md:text-3xl font-bold text-white">VARANASI TOUR</h3>
+                    <h3
+                      className="text-2xl md:text-3xl font-bold text-white"
+                      style={{ fontFamily: "var(--font-montserrat)" }}
+                    >
+                      VARANASI TOUR
+                    </h3>
                   </div>
                 </div>
               </div>
@@ -645,6 +777,7 @@ export default function Home() {
                 <Link
                   href="/#"
                   className="inline-block border-2 border-[#b18c57] text-[#b18c57] px-8 py-3 rounded-full hover:bg-[#DAA520] hover:text-white transition-colors"
+                  style={{ fontFamily: "var(--font-montserrat)" }}
                 >
                   VIEW ALL DESTINATIONS
                 </Link>
@@ -667,6 +800,7 @@ export default function Home() {
                     e.stopPropagation()
                     setSelectedImage(null)
                   }}
+                  style={{ fontFamily: "var(--font-montserrat)" }}
                 >
                   <X className="w-6 h-6 text-white" />
                 </button>
@@ -687,9 +821,14 @@ export default function Home() {
           <section className="pt-20">
             <div className="container mx-auto px-4">
               <div className="text-center mb-12">
-                <h2 className="text-3xl md:text-4xl font-medium text-[#4a4a4a] mb-6">Get In Touch</h2>
+                <h2
+                  className="text-3xl md:text-4xl font-medium text-[#4a4a4a] mb-6"
+                  style={{ fontFamily: "var(--font-montserrat)" }}
+                >
+                  Get In Touch
+                </h2>
 
-                <p className="text-gray-600 max-w-2xl mx-auto">
+                <p className="text-gray-600 max-w-2xl mx-auto" style={{ fontFamily: "var(--font-montserrat)" }}>
                   Have questions or need assistance? Our team is here to help you plan your perfect stay at The Pearl
                   Hotel.
                 </p>
@@ -702,41 +841,57 @@ export default function Home() {
 
                 <div>
                   <div className="bg-white rounded-lg shadow-md p-6 mb-8">
-                    <h2 className="text-xl font-semibold mb-4 font-medium">Our Information</h2>
+                    <h2
+                      className="text-xl font-semibold mb-4 font-medium"
+                      style={{ fontFamily: "var(--font-montserrat)" }}
+                    >
+                      Our Information
+                    </h2>
 
                     <div className="space-y-4">
                       <div className="flex items-start">
                         <MapPin className="h-5 w-5 mr-3 text-[#b18c57]" />
                         <div>
-                          <h3 className="font-medium">Address</h3>
-                          <p>8721/1, Desh Bandhu Gupta Road,Pahar Ganj,New Delhi-110055(INDIA)</p>
+                          <h3 className="font-medium" style={{ fontFamily: "var(--font-montserrat)" }}>
+                            Address
+                          </h3>
+                          <p style={{ fontFamily: "var(--font-montserrat)" }}>
+                            8721/1, Desh Bandhu Gupta Road,Pahar Ganj,New Delhi-110055(INDIA)
+                          </p>
                         </div>
                       </div>
 
                       <div className="flex items-start">
                         <Phone className="h-5 w-5 mr-3 text-[#b18c57]" />
                         <div>
-                          <h3 className="font-medium">Phone</h3>
-                          <p>+91 (11) 23633363,23634363</p>
+                          <h3 className="font-medium" style={{ fontFamily: "var(--font-montserrat)" }}>
+                            Phone
+                          </h3>
+                          <p style={{ fontFamily: "var(--font-montserrat)" }}>+91 (11) 23633363,23634363</p>
                         </div>
                       </div>
 
                       <div className="flex items-start">
                         <Mail className="h-5 w-5 mr-3 text-[#b18c57]" />
                         <div>
-                          <h3 className="font-medium">Email</h3>
-                          <p>hotelthepearl55@gmail.com</p>
+                          <h3 className="font-medium" style={{ fontFamily: "var(--font-montserrat)" }}>
+                            Email
+                          </h3>
+                          <p style={{ fontFamily: "var(--font-montserrat)" }}>hotelthepearl55@gmail.com</p>
                         </div>
                       </div>
 
                       <div className="mt-6">
-                        <h3 className="font-medium mb-2">Connect With Us</h3>
+                        <h3 className="font-medium mb-2" style={{ fontFamily: "var(--font-montserrat)" }}>
+                          Connect With Us
+                        </h3>
                         <div className="flex space-x-4">
                           <a
                             href="https://www.facebook.com/thehotelpearlresidency/"
                             target="_blank"
                             rel="noopener noreferrer"
                             className="text-gray-600 hover:text-[#b18c57]"
+                            style={{ fontFamily: "var(--font-montserrat)" }}
                           >
                             <Facebook className="h-5 w-5" />
                           </a>
@@ -745,6 +900,7 @@ export default function Home() {
                             target="_blank"
                             rel="noopener noreferrer"
                             className="text-gray-600 hover:text-[#b18c57]"
+                            style={{ fontFamily: "var(--font-montserrat)" }}
                           >
                             <Instagram className="h-5 w-5" />
                           </a>
@@ -753,6 +909,7 @@ export default function Home() {
                             target="_blank"
                             rel="noopener noreferrer"
                             className="text-gray-600 hover:text-[#b18c57]"
+                            style={{ fontFamily: "var(--font-montserrat)" }}
                           >
                             <Twitter className="h-5 w-5" />
                           </a>
