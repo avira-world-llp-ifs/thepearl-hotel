@@ -51,9 +51,11 @@ export default async function AdminRoomsPage() {
                       <div className="relative h-12 w-20 rounded overflow-hidden">
                         <Image
                           src={
-                            room.images && room.images.length > 0
+                            room.images && room.images.length > 0 && room.images[0].startsWith("http")
                               ? room.images[0]
-                              : "/placeholder.svg?height=100&width=150"
+                              : room.images && room.images.length > 0
+                                ? room.images[0]
+                                : "/placeholder.svg?height=100&width=150"
                           }
                           alt={room.name}
                           fill

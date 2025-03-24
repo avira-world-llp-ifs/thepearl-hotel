@@ -47,6 +47,8 @@ export default function AboutPage() {
   }
 
   return (
+
+
     <div className="min-h-screen bg-white">
       {/* Page Title Section */}
       <section
@@ -106,16 +108,16 @@ export default function AboutPage() {
                 range of facilities and services includes:
               </p>
               <ul>
-                <li>🌟 Elaborate range of services and facilities</li>
-                <li>🌟 Affordable tour packages</li>
-                <li>🌟 On-site restaurant</li>
-                <li>🌟 Budget-friendly accommodation</li>
-                <li>🌟 Gym</li>
-                <li>🌟 Conference Facility</li>
-                <li>🌟 Beautiful Rooftop to relax</li>
+                <li> Elaborate range of services and facilities</li>
+                <li> Affordable tour packages</li>
+                <li> On-site restaurant</li>
+                <li> Budget-friendly accommodation</li>
+                <li> Gym</li>
+                <li> Conference Facility</li>
+                <li> Beautiful Rooftop to relax</li>
               </ul>
 
-              <div className="flex items-center mb-8">
+              {/* <div className="flex items-center mb-8">
                 <div className="w-20 h-20 rounded-full overflow-hidden mr-6">
                   {isLoaded && (
                     <Image
@@ -135,10 +137,10 @@ export default function AboutPage() {
                   <p className="font-bold">Jonathan Dawson</p>
                   <p className="text-sm text-gray-500">Founder & CEO</p>
                 </div>
-              </div>
+              </div> */}
 
               <Link
-                href="/#"
+                href="/gallery"
                 className="inline-flex items-center text-[#b18c57] font-medium uppercase tracking-wider text-sm hover:text-[#9a7848] transition-colors"
               >
                 <span className="mr-2">EXPLORE OUR GALLERY</span>
@@ -306,7 +308,7 @@ export default function AboutPage() {
       </section>
 
       {/* Leadership Team Section */}
-      <section className="py-20 bg-white">
+      {/* <section className="py-20 bg-white">
         <div className="container mx-auto px-4">
           <div className="text-center mb-16">
             <h2 className="text-3xl md:text-4xl font-serif text-[#4a4a4a] mb-6">Meet Our Leadership</h2>
@@ -387,10 +389,10 @@ export default function AboutPage() {
             </Link>
           </div>
         </div>
-      </section>
+      </section> */}
 
       {/* Achievements Section */}
-      <section className="py-20 bg-gray-50">
+      {/* <section className="py-20 bg-gray-50">
         <div className="container mx-auto px-4">
           <div className="text-center mb-16">
             <h2 className="text-3xl md:text-4xl font-serif text-[#4a4a4a] mb-6">Recognition & Awards</h2>
@@ -470,7 +472,7 @@ export default function AboutPage() {
             </div>
           </div>
         </div>
-      </section>
+      </section> */}
 
       {/* Why Choose Us Section */}
       <section className="py-20 bg-white">

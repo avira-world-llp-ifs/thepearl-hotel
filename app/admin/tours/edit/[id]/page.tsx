@@ -35,12 +35,8 @@ export default async function EditTourPage({ params }: { params: { id: string } 
   }
 
   return (
-    <div className="space-y-6">
-      <div>
-        <h1 className="text-2xl font-bold tracking-tight">Edit Tour Package</h1>
-        <p className="text-muted-foreground">Update tour details, itinerary, and availability.</p>
-      </div>
-
+    <div className="container mx-auto p-6">
+      <h1 className="text-2xl font-bold mb-6">Edit Tour Package</h1>
       <TourForm tour={data.tour} />
     </div>
   )

@@ -8,6 +8,7 @@ import { roomService } from "@/lib/db"
 import { formatPrice } from "@/lib/utils"
 import { Pencil, ArrowLeft, Check } from "lucide-react"
 import { DeleteRoomButton } from "@/components/admin/delete-room-button"
+import { Input } from "@/components/ui/input"
 
 interface RoomDetailPageProps {
   params: {
@@ -124,6 +125,17 @@ export default async function RoomDetailPage({ params }: RoomDetailPageProps) {
                 <div>
                   <p className="text-sm font-medium text-muted-foreground mb-1">Last Updated</p>
                   <p>{new Date(room.updatedAt).toLocaleDateString()}</p>
+                </div>
+
+                <div className="pt-4 border-t">
+                  <p className="text-sm font-medium text-muted-foreground mb-1">Add Image URL</p>
+                  <form className="flex gap-2" action={`/api/rooms/${room._id}/add-image`} method="POST">
+                    <Input name="imageUrl" placeholder="https://example.com/image.jpg" className="flex-1" />
+                    <Button type="submit" size="sm">
+                      Add
+                    </Button>
+                  </form>
+                  <p className="text-xs text-muted-foreground mt-1">Add an image URL to the room gallery</p>
                 </div>
 
                 <div className="pt-4 border-t flex flex-col gap-2">

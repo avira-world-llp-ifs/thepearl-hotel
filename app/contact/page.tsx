@@ -108,7 +108,7 @@ export default async function ContactPage() {
           <h2 className="text-2xl font-bold mb-6">Our Location</h2>
           <div className="aspect-[4/3] w-full overflow-hidden rounded-lg bg-muted">
             <iframe
-              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3501.3964326551394!2d77.21031491508112!3d28.64175098241!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x390cfd4a1f8c0b79%3A0x9e4f5a8e5a8c5e0a!2sPaharganj%2C%20New%20Delhi%2C%20Delhi%20110055!5e0!3m2!1sen!2sin!4v1647870255896!5m2!1sen!2sin"
+              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3501.4924854870114!2d77.21180747528953!3d28.644969075658!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x390cfd679c9500a5%3A0x7a61b946bf5f7e8c!2sHotel%20The%20Pearl!5e0!3m2!1sen!2sin!4v1742744532602!5m2!1sen!2sin"
               width="100%"
               height="100%"
               style={{ border: 0 }}

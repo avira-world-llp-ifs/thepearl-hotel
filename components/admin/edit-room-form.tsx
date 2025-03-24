@@ -2,7 +2,7 @@
 
 import type React from "react"
 
-import { useState, useRef, useEffect } from "react"
+import { useState, useEffect } from "react"
 import { useRouter } from "next/navigation"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
@@ -11,7 +11,7 @@ import { Label } from "@/components/ui/label"
 import { Textarea } from "@/components/ui/textarea"
 import { Switch } from "@/components/ui/switch"
 import { Alert, AlertDescription } from "@/components/ui/alert"
-import { AlertCircle, CheckCircle2, X, Upload } from "lucide-react"
+import { AlertCircle, CheckCircle2, X } from "lucide-react"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import Image from "next/image"
 
@@ -28,7 +28,6 @@ interface EditRoomFormProps {
 
 export function EditRoomForm({ room }: EditRoomFormProps) {
   const router = useRouter()
-  const fileInputRef = useRef<HTMLInputElement>(null)
   const [formData, setFormData] = useState({
     name: room.name || "",
     description: room.description || "",
@@ -44,9 +43,9 @@ export function EditRoomForm({ room }: EditRoomFormProps) {
   const [error, setError] = useState("")
   const [success, setSuccess] = useState("")
   const [existingImages, setExistingImages] = useState<string[]>(room.images || [])
-  const [newImages, setNewImages] = useState<{ file: File; preview: string }[]>([])
   const [categories, setCategories] = useState<Category[]>([])
   const [isFetchingCategories, setIsFetchingCategories] = useState(true)
+  const [newImageUrl, setNewImageUrl] = useState<string>("")
 
   // Fetch categories on component mount
   useEffect(() => {
@@ -108,39 +107,6 @@ export function EditRoomForm({ room }: EditRoomFormProps) {
     }))
   }
 
-  const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const files = e.target.files
-    if (!files) return
-
-    // Check if adding these files would exceed the 5 image limit
-    if (existingImages.length + newImages.length + files.length > 5) {
-      setError("You can only upload a maximum of 5 images")
-      return
-    }
-
-    const uploadedImages = Array.from(files).map((file) => ({
-      file,
-      preview: URL.createObjectURL(file),
-    }))
-
-    setNewImages((prev) => [...prev, ...uploadedImages])
-
-    // Reset the file input
-    if (fileInputRef.current) {
-      fileInputRef.current.value = ""
-    }
-  }
-
-  const handleRemoveNewImage = (index: number) => {
-    setNewImages((prev) => {
-      const updatedImages = [...prev]
-      // Revoke the object URL to avoid memory leaks
-      URL.revokeObjectURL(updatedImages[index].preview)
-      updatedImages.splice(index, 1)
-      return updatedImages
-    })
-  }
-
   const handleRemoveExistingImage = (index: number) => {
     setExistingImages((prev) => {
       const updatedImages = [...prev]
@@ -149,23 +115,18 @@ export function EditRoomForm({ room }: EditRoomFormProps) {
     })
   }
 
-  const uploadNewImages = async () => {
-    if (newImages.length === 0) return []
+  const handleAddImageUrl = () => {
+    if (!newImageUrl || newImageUrl.trim() === "") return
 
-    const imageUrls: string[] = []
-
-    // In a real application, you would upload these to a storage service
-    // For this demo, we'll use placeholder URLs with the image names
-    for (const image of newImages) {
-      // Simulate an upload delay
-      await new Promise((resolve) => setTimeout(resolve, 500))
-
-      // Create a placeholder URL with the image name
-      const imageUrl = `/placeholder.svg?height=600&width=800&text=${encodeURIComponent(image.file.name)}`
-      imageUrls.push(imageUrl)
+    // Check if adding this URL would exceed the 5 image limit
+    if (existingImages.length >= 5) {
+      setError("You can only upload a maximum of 5 images")
+      return
     }
 
-    return imageUrls
+    // Add the URL to existing images
+    setExistingImages((prev) => [...prev, newImageUrl.trim()])
+    setNewImageUrl("")
   }
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -175,11 +136,8 @@ export function EditRoomForm({ room }: EditRoomFormProps) {
     setIsLoading(true)
 
     try {
-      // Upload new images first
-      const newImageUrls = await uploadNewImages()
-
-      // Combine existing and new image URLs
-      const allImageUrls = [...existingImages, ...newImageUrls]
+      // Use only the existing images
+      const allImageUrls = [...existingImages]
 
       // Log the data being sent for debugging
       console.log("Updating room data:", {
@@ -235,14 +193,7 @@ export function EditRoomForm({ room }: EditRoomFormProps) {
     }
   }
 
-  // Clean up object URLs when component unmounts
-  useEffect(() => {
-    return () => {
-      newImages.forEach((image) => URL.revokeObjectURL(image.preview))
-    }
-  }, [newImages])
-
-  const totalImages = existingImages.length + newImages.length
+  const totalImages = existingImages.length
   const remainingSlots = 5 - totalImages
 
   return (
@@ -371,7 +322,7 @@ export function EditRoomForm({ room }: EditRoomFormProps) {
             />
           </div>
 
-          {/* Image Upload Section */}
+          {/* Image URL Section */}
           <div className="space-y-2">
             <Label>Room Photos (Max 5)</Label>
             <div className="flex flex-wrap gap-4 mb-4">
@@ -395,50 +346,33 @@ export function EditRoomForm({ room }: EditRoomFormProps) {
                   </button>
                 </div>
               ))}
-
-              {/* New Images */}
-              {newImages.map((image, index) => (
-                <div key={`new-${index}`} className="relative group">
-                  <div className="relative h-24 w-32 rounded-md overflow-hidden border">
-                    <Image
-                      src={image.preview || "/placeholder.svg"}
-                      alt={`New room photo ${index + 1}`}
-                      fill
-                      className="object-cover"
-                    />
-                  </div>
-                  <button
-                    type="button"
-                    onClick={() => handleRemoveNewImage(index)}
-                    className="absolute -top-2 -right-2 bg-destructive text-destructive-foreground rounded-full p-1 shadow-sm opacity-90 hover:opacity-100"
-                  >
-                    <X className="h-3 w-3" />
-                  </button>
-                </div>
-              ))}
-
-              {/* Add Photo Button */}
-              {totalImages < 5 && (
-                <div
-                  className="h-24 w-32 border border-dashed rounded-md flex flex-col items-center justify-center cursor-pointer hover:bg-muted/50"
-                  onClick={() => fileInputRef.current?.click()}
-                >
-                  <Upload className="h-6 w-6 text-muted-foreground mb-1" />
-                  <span className="text-xs text-muted-foreground">Add Photo</span>
-                  <input
-                    ref={fileInputRef}
-                    type="file"
-                    accept="image/*"
-                    onChange={handleImageUpload}
-                    className="hidden"
-                    multiple={remainingSlots > 1} // Allow multiple only if we can add more than 1
-                  />
-                </div>
-              )}
             </div>
             <p className="text-xs text-muted-foreground">
               {totalImages} of 5 photos added. {remainingSlots} remaining.
             </p>
+            {totalImages < 5 && (
+              <div className="mt-4 space-y-2">
+                <Label htmlFor="imageUrl">Add Image URL</Label>
+                <div className="flex gap-2">
+                  <Input
+                    id="imageUrl"
+                    placeholder="https://example.com/image.jpg"
+                    value={newImageUrl || ""}
+                    onChange={(e) => setNewImageUrl(e.target.value)}
+                    className="flex-1"
+                  />
+                  <Button
+                    type="button"
+                    variant="outline"
+                    onClick={handleAddImageUrl}
+                    disabled={!newImageUrl || newImageUrl.trim() === ""}
+                  >
+                    Add URL
+                  </Button>
+                </div>
+                <p className="text-xs text-muted-foreground">Add images directly from URLs</p>
+              </div>
+            )}
           </div>
 
           <div className="space-y-2">

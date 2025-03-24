@@ -108,13 +108,27 @@ export default async function TourDetailPage({ params }: TourDetailPageProps) {
     transportation: tour.transportation || "Air-conditioned vehicles",
   }
 
+  // Ensure we have an array of images, even if it's just the main image
+  const tourImages =
+    tour.images && tour.images.length > 0
+      ? tour.images
+      : tour.image
+        ? [tour.image]
+        : ["/placeholder.svg?height=400&width=800"]
+
   return (
     <div className="container mx-auto py-12">
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
         {/* Left Column - Tour Details */}
         <div className="lg:col-span-2 space-y-8">
           <div className="relative w-full h-[400px] rounded-lg overflow-hidden mb-6">
-            <Image src={tourData.image || "/placeholder.svg"} alt={tourData.title} fill className="object-cover" />
+            <Image
+              src={tourImages[0] || "/placeholder.svg"}
+              alt={tourData.title}
+              fill
+              className="object-cover"
+              priority
+            />
             <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent flex flex-col justify-end p-6">
               <h1 className="text-3xl md:text-4xl font-bold text-white mb-2">{tourData.title}</h1>
               <div className="flex flex-wrap gap-4 text-white">
@@ -302,10 +316,10 @@ export default async function TourDetailPage({ params }: TourDetailPageProps) {
             <TabsContent value="gallery" className="mt-6">
               <h2 className="text-2xl font-bold mb-4">Tour Gallery</h2>
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-                {(tour.images || [tourData.image]).map((image, index) => (
+                {tourImages.map((image, index) => (
                   <div key={index} className="relative h-48 rounded-lg overflow-hidden">
                     <Image
-                      src={image || "/placeholder.svg?height=200&width=300"}
+                      src={image || "/placeholder.svg"}
                       alt={`${tourData.title} - Image ${index + 1}`}
                       fill
                       className="object-cover hover:scale-105 transition-transform duration-300"
@@ -313,26 +327,15 @@ export default async function TourDetailPage({ params }: TourDetailPageProps) {
                   </div>
                 ))}
 
-                {(!tour.images || tour.images.length < 2) && (
-                  <>
-                    <div className="relative h-48 rounded-lg overflow-hidden">
-                      <Image
-                        src="/placeholder.svg?height=200&width=300"
-                        alt={`${tourData.title} - Additional Image 1`}
-                        fill
-                        className="object-cover hover:scale-105 transition-transform duration-300"
-                      />
+                {tourImages.length < 3 &&
+                  Array.from({ length: 3 - tourImages.length }).map((_, index) => (
+                    <div
+                      key={`placeholder-${index}`}
+                      className="relative h-48 rounded-lg overflow-hidden bg-gray-100 flex items-center justify-center"
+                    >
+                      <span className="text-gray-400">No image available</span>
                     </div>
-                    <div className="relative h-48 rounded-lg overflow-hidden">
-                      <Image
-                        src="/placeholder.svg?height=200&width=300"
-                        alt={`${tourData.title} - Additional Image 2`}
-                        fill
-                        className="object-cover hover:scale-105 transition-transform duration-300"
-                      />
-                    </div>
-                  </>
-                )}
+                  ))}
               </div>
             </TabsContent>
           </Tabs>

@@ -1,7 +1,7 @@
 import { Suspense } from "react"
 import Link from "next/link"
 import Image from "next/image"
-import { MapPin, Clock, Calendar, ArrowRight } from "lucide-react"
+import { MapPin, Clock, Calendar, ArrowRight, ImageIcon } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardFooter } from "@/components/ui/card"
 import ToursSkeleton from "@/components/tours-skeleton"
@@ -93,17 +93,30 @@ async function ToursGrid() {
 function TourCard({ tour }: { tour: any }) {
   // Ensure we have an ID, even if it's in different formats
   const tourId = tour._id || tour.id || ""
-  console.log("Tour ID:", tourId) // Debug log
+
+  // Check if the tour has a valid image
+  const hasValidImage = tour.image && typeof tour.image === "string" && tour.image.trim() !== ""
+  const hasValidImages = Array.isArray(tour.images) && tour.images.length > 0 && tour.images[0].trim() !== ""
+
+  // Use the first image from the images array if available, otherwise use the image property
+  const imageUrl = hasValidImages ? tour.images[0] : hasValidImage ? tour.image : null
 
   return (
     <Card className="overflow-hidden h-full flex flex-col">
-      <div className="relative h-48">
-        <Image
-          src={tour.image || "https://images.unsplash.com/photo-1476514525535-07fb3b4ae5f1?q=80&w=2070"}
-          alt={tour.title || "Tour Package"}
-          fill
-          className="object-cover"
-        />
+      <div className="relative h-48 bg-muted">
+        {imageUrl ? (
+          <Image
+            src={imageUrl || "/placeholder.svg"}
+            alt={tour.title || "Tour Package"}
+            fill
+            className="object-cover"
+          />
+        ) : (
+          <div className="flex items-center justify-center h-full">
+            <ImageIcon className="h-12 w-12 text-muted-foreground" />
+            <span className="sr-only">No image available</span>
+          </div>
+        )}
       </div>
       <CardContent className="pt-6 flex-grow">
         <h2 className="text-xl font-bold mb-2">{tour.title || "Tour Package"}</h2>

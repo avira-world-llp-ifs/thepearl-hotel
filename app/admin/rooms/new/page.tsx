@@ -2,7 +2,7 @@
 
 import type React from "react"
 
-import { useState, useRef, useEffect } from "react"
+import { useState, useEffect } from "react"
 import { useRouter } from "next/navigation"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
@@ -11,7 +11,7 @@ import { Label } from "@/components/ui/label"
 import { Textarea } from "@/components/ui/textarea"
 import { Switch } from "@/components/ui/switch"
 import { Alert, AlertDescription } from "@/components/ui/alert"
-import { AlertCircle, CheckCircle2, X, Upload } from "lucide-react"
+import { AlertCircle, CheckCircle2, X } from "lucide-react"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import Image from "next/image"
 
@@ -24,7 +24,6 @@ interface Category {
 
 export default function AddRoomPage() {
   const router = useRouter()
-  const fileInputRef = useRef<HTMLInputElement>(null)
   const [formData, setFormData] = useState({
     name: "",
     description: "",
@@ -39,7 +38,8 @@ export default function AddRoomPage() {
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState("")
   const [success, setSuccess] = useState("")
-  const [images, setImages] = useState<{ file: File; preview: string }[]>([])
+  const [images, setImages] = useState<string[]>([])
+  const [newImageUrl, setNewImageUrl] = useState("")
   const [categories, setCategories] = useState<Category[]>([])
   const [isFetchingCategories, setIsFetchingCategories] = useState(true)
 
@@ -103,34 +103,24 @@ export default function AddRoomPage() {
     }))
   }
 
-  const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const files = e.target.files
-    if (!files) return
+  const handleAddImageUrl = () => {
+    if (!newImageUrl.trim()) return
 
-    // Check if adding these files would exceed the 5 image limit
-    if (images.length + files.length > 5) {
-      setError("You can only upload a maximum of 5 images")
+    // Check if adding this URL would exceed the 5 image limit
+    if (images.length >= 5) {
+      setError("You can only add a maximum of 5 images")
       return
     }
 
-    const newImages = Array.from(files).map((file) => ({
-      file,
-      preview: URL.createObjectURL(file),
-    }))
-
-    setImages((prev) => [...prev, ...newImages])
-
-    // Reset the file input
-    if (fileInputRef.current) {
-      fileInputRef.current.value = ""
-    }
+    // Add the URL to images array
+    setImages((prev) => [...prev, newImageUrl.trim()])
+    // Clear the input field
+    setNewImageUrl("")
   }
 
   const handleRemoveImage = (index: number) => {
     setImages((prev) => {
       const newImages = [...prev]
-      // Revoke the object URL to avoid memory leaks
-      URL.revokeObjectURL(newImages[index].preview)
       newImages.splice(index, 1)
       return newImages
     })
@@ -168,25 +158,6 @@ export default function AddRoomPage() {
     return true
   }
 
-  const uploadImages = async () => {
-    if (images.length === 0) return []
-
-    const imageUrls: string[] = []
-
-    // In a real application, you would upload these to a storage service
-    // For this demo, we'll use placeholder URLs with the image names
-    for (const image of images) {
-      // Simulate an upload delay
-      await new Promise((resolve) => setTimeout(resolve, 500))
-
-      // Create a placeholder URL with the image name
-      const imageUrl = `/placeholder.svg?height=600&width=800&text=${encodeURIComponent(image.file.name)}`
-      imageUrls.push(imageUrl)
-    }
-
-    return imageUrls
-  }
-
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     setError("")
@@ -200,8 +171,8 @@ export default function AddRoomPage() {
     setIsLoading(true)
 
     try {
-      // Upload images first
-      const imageUrls = await uploadImages()
+      // No need to upload images, use the URLs directly
+      const imageUrls = images
 
       // Prepare data with proper type conversion
       const roomData = {
@@ -405,15 +376,15 @@ export default function AddRoomPage() {
               />
             </div>
 
-            {/* Image Upload Section */}
+            {/* Image URL Section */}
             <div className="space-y-2">
               <Label>Room Photos (Max 5)</Label>
               <div className="flex flex-wrap gap-4 mb-4">
-                {images.map((image, index) => (
+                {images.map((imageUrl, index) => (
                   <div key={index} className="relative group">
                     <div className="relative h-24 w-32 rounded-md overflow-hidden border">
                       <Image
-                        src={image.preview || "/placeholder.svg"}
+                        src={imageUrl || "/placeholder.svg"}
                         alt={`Room photo ${index + 1}`}
                         fill
                         className="object-cover"
@@ -428,25 +399,26 @@ export default function AddRoomPage() {
                     </button>
                   </div>
                 ))}
-
-                {images.length < 5 && (
-                  <div
-                    className="h-24 w-32 border border-dashed rounded-md flex flex-col items-center justify-center cursor-pointer hover:bg-muted/50"
-                    onClick={() => fileInputRef.current?.click()}
-                  >
-                    <Upload className="h-6 w-6 text-muted-foreground mb-1" />
-                    <span className="text-xs text-muted-foreground">Add Photo</span>
-                    <input
-                      ref={fileInputRef}
-                      type="file"
-                      accept="image/*"
-                      onChange={handleImageUpload}
-                      className="hidden"
-                      multiple={images.length < 4} // Allow multiple only if we can add more than 1
-                    />
-                  </div>
-                )}
               </div>
+
+              {images.length < 5 && (
+                <div className="space-y-2">
+                  <Label htmlFor="imageUrl">Add Image URL</Label>
+                  <div className="flex gap-2">
+                    <Input
+                      id="imageUrl"
+                      value={newImageUrl}
+                      onChange={(e) => setNewImageUrl(e.target.value)}
+                      placeholder="Enter image URL (e.g., https://example.com/image.jpg)"
+                      className="flex-1"
+                    />
+                    <Button type="button" variant="outline" onClick={handleAddImageUrl} disabled={!newImageUrl.trim()}>
+                      Add
+                    </Button>
+                  </div>
+                </div>
+              )}
+
               <p className="text-xs text-muted-foreground">
                 {images.length} of 5 photos added. {5 - images.length} remaining.
               </p>
