@@ -14,15 +14,12 @@ export const metadata: Metadata = {
 
 async function getEnquiries() {
   try {
-    const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/enquiries`, {
-      cache: "no-store",
-    })
+    // Import the enquiry service directly
+    const { enquiryService } = await import("@/lib/db")
 
-    if (!response.ok) {
-      throw new Error("Failed to fetch enquiries")
-    }
-
-    return await response.json()
+    // Get all enquiries directly from the service
+    const enquiries = await enquiryService.getAll()
+    return enquiries
   } catch (error) {
     console.error("Error fetching enquiries:", error)
     return []

@@ -17,13 +17,14 @@ const montserrat = Montserrat({
   variable: "--font-montserrat",
 })
 
-// Add this after the montserrat constant definition
-// Add this after the montserrat constant definition
+// Update the HotelAbout component to properly implement Montserrat font on all text elements
 
-// Custom HotelAbout component directly in page.tsx
 function HotelAbout() {
   return (
-    <div className={`relative w-full h-[700px] md:h-[650px] lg:h-[750px] ${montserrat.className}`}>
+    <div
+      className={`relative w-full h-[700px] md:h-[600px] lg:h-[650px] ${montserrat.className} mt-5 md:mt-0`}
+      style={{ fontFamily: "var(--font-montserrat)" }}
+    >
       {/* Background image */}
       <div className="absolute inset-0 w-full h-full">
         <Image
@@ -36,16 +37,16 @@ function HotelAbout() {
       </div>
 
       {/* White card with content that overlaps the image */}
-      <div className="absolute left-0 top-1/2 -translate-y-1/2 w-[97%] md:w-[70%] lg:w-[60%] bg-white p-6 md:p-10 rounded-r-3xl shadow-lg">
+      <div className="absolute left-0 top-1/2 -translate-y-1/2 w-[97%] md:w-[70%] lg:w-[60%] bg-white p-5 md:p-6 lg:p-7 rounded-r-3xl shadow-lg">
         <h1
-          className="text-3xl md:text-4xl font-bold text-center mb-4 md:mb-6 font-[var(--font-montserrat)]"
+          className={`text-3xl md:text-4xl font-bold text-center mb-4 md:mb-5 ${montserrat.className}`}
           style={{ fontFamily: "var(--font-montserrat)" }}
         >
           About Hotel The Pearl
         </h1>
 
         <p
-          className="text-gray-700 text-center text-sm md:text-base mb-4"
+          className={`text-gray-700 text-center text-sm md:text-base mb-3 ${montserrat.className}`}
           style={{ fontFamily: "var(--font-montserrat)" }}
         >
           Experience the best of Indian hospitality at Hotel The Pearl, one of the leading economy hotels in India. Our
@@ -53,7 +54,7 @@ function HotelAbout() {
         </p>
 
         <p
-          className="text-gray-700 text-center text-sm md:text-base mb-4"
+          className={`text-gray-700 text-center text-sm md:text-base mb-3 ${montserrat.className}`}
           style={{ fontFamily: "var(--font-montserrat)" }}
         >
           Conveniently located in City Centre, near Connaught Place, Paharganj Market, and adjacent to the New Delhi
@@ -61,39 +62,45 @@ function HotelAbout() {
         </p>
 
         {/* Features section */}
-        <div className="mt-8 w-full max-w-6xl mx-auto px-6">
+        <div className="mt-4 md:mt-3 w-full max-w-6xl mx-auto px-4 md:px-2">
           <h2
-            className="text-center text-xl md:text-2xl font-medium text-[#F8AFA6]"
+            className={`text-center text-xl md:text-2xl font-medium text-[#F8AFA6] ${montserrat.className}`}
             style={{ fontFamily: "var(--font-montserrat)" }}
           >
             DESTINATION FOR MEMORABLE EXPERIENCES
           </h2>
 
-          <div className="flex flex-col md:flex-row justify-center gap-20 mb-6">
+          <div className="flex flex-col md:flex-row justify-center gap-10 md:gap-16 my-5">
             <div className="flex flex-col items-center">
-              <div className="w-20 h-20 rounded-full bg-[#f9f5f2] flex items-center justify-center mb-2">
-                <Check className="text-[#e9a8a1] w-8 h-8" />
+              <div className="w-16 h-16 rounded-full bg-[#f9f5f2] flex items-center justify-center mb-2">
+                <Check className="text-[#e9a8a1] w-7 h-7" />
               </div>
-              <p className="text-gray-700 font-medium text-lg" style={{ fontFamily: "var(--font-montserrat)" }}>
+              <p
+                className={`text-gray-700 font-medium text-lg ${montserrat.className}`}
+                style={{ fontFamily: "var(--font-montserrat)" }}
+              >
                 Best Amenities
               </p>
             </div>
 
             <div className="flex flex-col items-center">
-              <div className="w-20 h-20 rounded-full bg-[#f9f5f2] flex items-center justify-center mb-2">
-                <Check className="text-[#e9a8a1] w-8 h-8" />
+              <div className="w-16 h-16 rounded-full bg-[#f9f5f2] flex items-center justify-center mb-2">
+                <Check className="text-[#e9a8a1] w-7 h-7" />
               </div>
-              <p className="text-gray-700 font-medium text-lg" style={{ fontFamily: "var(--font-montserrat)" }}>
+              <p
+                className={`text-gray-700 font-medium text-lg ${montserrat.className}`}
+                style={{ fontFamily: "var(--font-montserrat)" }}
+              >
                 Luxury Rooms
               </p>
             </div>
           </div>
 
-          <div className="flex justify-center">
+          <div className="flex justify-center mt-4">
             <button
-              className="bg-[#1e1e2d] text-white px-12 py-4 uppercase text-sm tracking-wider hover:bg-[#2a2a3d] transition-colors"
-              onClick={() => (window.location.href = "/rooms")}
+              className={`bg-[#1e1e2d] text-white px-10 py-3 uppercase text-sm tracking-wider hover:bg-[#2a2a3d] transition-colors ${montserrat.className}`}
               style={{ fontFamily: "var(--font-montserrat)" }}
+              onClick={() => (window.location.href = "/rooms")}
             >
               BOOK NOW
             </button>
@@ -273,8 +280,11 @@ export default function Home() {
 
   return (
     <>
-      <div className={`min-h-screen bg-white ${montserrat.className}`} style={{ fontFamily: "var(--font-montserrat)" }}>
-        <div className="mx-auto max-w-[1440px]">
+      <div
+        className={`min-h-screen bg-white ${montserrat.className} w-full`}
+        style={{ fontFamily: "var(--font-montserrat)" }}
+      >
+        <div className="w-full m-0 p-0">
           {/* Full-Page Video/Slider Hero Section */}
           <section className="relative h-screen w-full overflow-hidden">
             {!videoEnded ? (
@@ -309,7 +319,7 @@ export default function Home() {
             )}
 
             {/* Content - shown over both video and slider */}
-            <div className="absolute inset-0 flex flex-col justify-center items-center text-center text-white px-4 z-20">
+            <div className="absolute inset-0 flex flex-col justify-center items-center text-center text-white z-20">
               <div className="max-w-3xl">
                 <div className="flex items-center justify-center gap-4 mb-6">
                   <div className="h-[1px] w-12 bg-gray-300"></div>
@@ -354,12 +364,18 @@ export default function Home() {
             </div>
           </section>
 
+          {/* Add padding between hero and HotelAbout */}
+          <div className="pt-28 md:pt-16 lg:pt-20"></div>
+
           <HotelAbout />
 
+          {/* Add spacing after HotelAbout */}
+          <div className="pt-10 md:pt-6"></div>
+
           {/* Featured Luxury Suite Section */}
-          <section className="bg-white">
+          <section className="bg-white w-full pt-20">
             {/* Heading Section */}
-            <div className="text-center py-16 bg-white">
+            <div className="text-center pb-16 bg-white">
               <h1
                 className="text-4xl md:text-5xl font-medium text-gray-800 mb-4"
                 style={{ fontFamily: "var(--font-montserrat)" }}
@@ -368,7 +384,7 @@ export default function Home() {
               </h1>
               <div className="w-20 h-1 bg-[#e9a8a1] mx-auto"></div>
             </div>
-            <div className="grid grid-cols-1 md:grid-cols-3">
+            <div className="grid grid-cols-1 md:grid-cols-3 w-full">
               {/* Left Image */}
               <div className="relative h-[400px] md:h-auto">
                 <Image
@@ -420,8 +436,8 @@ export default function Home() {
           </section>
 
           {/* Room Comparison Section */}
-          <section className="bg-gray-50">
-            <div className="grid grid-cols-1 md:grid-cols-3">
+          <section className="bg-gray-50 w-full pt-16">
+            <div className="grid grid-cols-1 md:grid-cols-3 w-full">
               {/* Left Content - Deluxe Room */}
               <div className="p-8 md:p-16 flex flex-col justify-center">
                 <div className="flex mb-6 justify-center">
@@ -509,14 +525,16 @@ export default function Home() {
 
           {/* Amenities Icons Section */}
           {/* Heading */}
-          <h2
-            className="text-3xl font-medium font-bold text-center mb-8 pt-12"
-            style={{ fontFamily: "var(--font-montserrat)" }}
-          >
-            Our Premium Amenities
-          </h2>
+          <div className="pt-16">
+            <h2
+              className="text-3xl font-medium font-bold text-center mb-8 w-full"
+              style={{ fontFamily: "var(--font-montserrat)" }}
+            >
+              Our Premium Amenities
+            </h2>
+          </div>
           <section
-            className="py-20"
+            className="py-20 w-full"
             style={{
               backgroundImage: `url('${getImagePath("/images/ROS08969_70_71.jpg")}')`,
               backgroundPosition: "center",
@@ -524,8 +542,8 @@ export default function Home() {
               backgroundRepeat: "no-repeat",
             }}
           >
-            <div className="container mx-auto px-4">
-              <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
+            <div className="w-full">
+              <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4 px-4 md:px-8 lg:px-12">
                 {/* Transportation */}
                 <div className="bg-white p-6 flex flex-col items-center justify-center">
                   <div className="w-16 h-16 mb-4 text-[#b18c57]">
@@ -567,9 +585,7 @@ export default function Home() {
                       <path d="M32,16c-4.4,0-8,3.6-8,8h4c0-2.2,1.8-4,4-4s4,1.8,4,4h4C40,19.6,36.4,16,32,16z" />
                     </svg>
                   </div>
-                  <h3 className="text-lg font-medium text-gray-800" style={{ fontFamily: "var(--font-montserrat)" }}>
-                    Fast Wifi
-                  </h3>
+                  <h3 className="text-lg font-medium text-gray-800">Fast Wifi</h3>
                 </div>
 
                 {/* Food & Drink */}
@@ -628,8 +644,8 @@ export default function Home() {
           </section>
 
           {/* Destinations Section */}
-          <section className="pt-10 bg-white">
-            <div className="container mx-auto px-4">
+          <section className="bg-white w-full">
+            <div className="w-full">
               <div className="text-center mb-12">
                 <h2
                   className="text-3xl md:text-4xl font-medium text-[#4a4a4a] mb-6"
@@ -643,7 +659,7 @@ export default function Home() {
                 </p>
               </div>
 
-              <div className="grid grid-cols-1 md:grid-cols-4 gap-3">
+              <div className="grid grid-cols-1 md:grid-cols-4 gap-3 px-0">
                 {/* First Row */}
                 <div className="relative rounded-[10px] overflow-hidden group h-[350px] shadow-md">
                   <Image
@@ -818,8 +834,8 @@ export default function Home() {
           )}
 
           {/* Contact Section */}
-          <section className="pt-20">
-            <div className="container mx-auto px-4">
+          <section className="w-full">
+            <div className="w-full">
               <div className="text-center mb-12">
                 <h2
                   className="text-3xl md:text-4xl font-medium text-[#4a4a4a] mb-6"
@@ -834,7 +850,7 @@ export default function Home() {
                 </p>
               </div>
 
-              <div className="grid md:grid-cols-2 gap-12">
+              <div className="grid md:grid-cols-2 gap-12 px-4 md:px-8 lg:px-12">
                 <div>
                   <EnquiryForm />
                 </div>

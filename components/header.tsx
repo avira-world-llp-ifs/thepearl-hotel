@@ -10,8 +10,9 @@ import { ThemeToggle } from "./theme-toggle"
 
 export function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
-  const [scrolled, setScrolled] = useState(false)
+  // const [scrolled, setScrolled] = useState(false)
   const pathname = usePathname()
+  const isDashboardOrAdmin = pathname?.startsWith("/dashboard") || pathname?.startsWith("/admin")
   const { data: session, status } = useSession()
   const isLoggedIn = status === "authenticated"
   const isAdmin = session?.user?.role === "admin"
@@ -22,20 +23,20 @@ export function Header() {
   }, [pathname])
 
   // Add scroll event listener to change header background
-  useEffect(() => {
-    const handleScroll = () => {
-      if (window.scrollY > 50) {
-        setScrolled(true)
-      } else {
-        setScrolled(false)
-      }
-    }
+  // useEffect(() => {
+  //   const handleScroll = () => {
+  //     if (window.scrollY > 50) {
+  //       setScrolled(true)
+  //     } else {
+  //       setScrolled(false)
+  //     }
+  //   }
 
-    window.addEventListener("scroll", handleScroll)
-    return () => {
-      window.removeEventListener("scroll", handleScroll)
-    }
-  }, [])
+  //   window.addEventListener("scroll", handleScroll)
+  //   return () => {
+  //     window.removeEventListener("scroll", handleScroll)
+  //   }
+  // }, [])
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen)
@@ -58,27 +59,27 @@ export function Header() {
   const dashboardLink = isAdmin ? "/admin" : "/dashboard"
 
   return (
-    <header
-      className={`sticky top-0 z-50 w-full transition-colors duration-300 ${
-        scrolled ? "bg-white dark:bg-gray-950 shadow-sm" : "bg-transparent"
-      }`}
-    >
-      <div className="container mx-auto px-4 py-4">
+    <header className={`absolute top-0 left-0 w-full z-50 ${isDashboardOrAdmin ? "bg-white py-2" : "bg-transparent"}`}>
+      <div className="container mx-auto px-4 pb-4">
         <div className="flex items-center justify-between">
           {/* Logo - Change from LuxStay to The Pearl */}
-          <Link href="/" className="flex items-center">
-            <span className="text-2xl font-bold text-primary">The Pearl</span>
+          <Link href="/" className={`text-2xl font-bold ${isDashboardOrAdmin ? "text-gray-800" : "text-amber-500"}`}>
+            The Pearl
           </Link>
 
           {/* Desktop Navigation */}
           <nav className="hidden md:flex items-center space-x-6">
             {navLinks.map((link) => (
               <Link
-                key={link.href}
                 href={link.href}
-                className={`text-sm font-medium transition-colors hover:text-primary ${
-                  pathname === link.href ? "text-primary" : "text-gray-600 dark:text-gray-300"
-                }`}
+                key={link.href}
+                className={`${
+                  pathname === link.href
+                    ? "text-blue-500"
+                    : isDashboardOrAdmin
+                      ? "text-gray-700 hover:text-blue-500"
+                      : "text-amber-500 hover:text-blue-500"
+                } transition-colors text-sm font-medium`}
               >
                 {link.label}
               </Link>
@@ -92,7 +93,15 @@ export function Header() {
             {isLoggedIn ? (
               <div className="flex items-center space-x-4">
                 <Link href={dashboardLink}>
-                  <Button variant="outline" size="sm" className="flex items-center gap-2">
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    className={`flex items-center gap-2 ${
+                      isDashboardOrAdmin
+                        ? "text-gray-700 hover:text-blue-500 border-gray-700 hover:border-blue-500"
+                        : "text-amber-500 hover:text-blue-500 border-amber-500 hover:border-blue-500"
+                    }`}
+                  >
                     <User size={16} />
                     {isAdmin ? "Admin Dashboard" : "Dashboard"}
                   </Button>
@@ -101,7 +110,11 @@ export function Header() {
                   variant="ghost"
                   size="sm"
                   onClick={handleLogout}
-                  className="flex items-center gap-2 text-red-500 hover:text-red-600 hover:bg-red-50 dark:hover:bg-red-950/30"
+                  className={`flex items-center gap-2 ${
+                    isDashboardOrAdmin
+                      ? "text-gray-700 hover:text-blue-500"
+                      : "text-red-500 hover:text-red-600 hover:bg-red-50 dark:hover:bg-red-950/30"
+                  }`}
                 >
                   <LogOut size={16} />
                   Logout
@@ -109,7 +122,13 @@ export function Header() {
               </div>
             ) : (
               <Link href="/login">
-                <Button variant="default" size="sm">
+                <Button
+                  variant="default"
+                  size="sm"
+                  className={`${
+                    isDashboardOrAdmin ? "bg-gray-700 hover:bg-blue-500" : "bg-amber-500 hover:bg-blue-500"
+                  } text-white`}
+                >
                   Login / Register
                 </Button>
               </Link>
@@ -118,7 +137,7 @@ export function Header() {
 
           {/* Mobile menu button */}
           <button
-            className="md:hidden p-2 rounded-md"
+            className="md:hidden p-2 rounded-md text-amber-500 hover:text-blue-500"
             onClick={toggleMenu}
             aria-label={isMenuOpen ? "Close menu" : "Open menu"}
           >
@@ -128,14 +147,14 @@ export function Header() {
 
         {/* Mobile Navigation */}
         {isMenuOpen && (
-          <div className="md:hidden mt-4 py-4 border-t">
+          <div className="md:hidden mt-4 py-4 border-t border-amber-500/20">
             <nav className="flex flex-col space-y-4">
               {navLinks.map((link) => (
                 <Link
                   key={link.href}
                   href={link.href}
-                  className={`text-sm font-medium transition-colors hover:text-primary ${
-                    pathname === link.href ? "text-primary" : "text-gray-600 dark:text-gray-300"
+                  className={`text-sm font-medium transition-colors hover:text-blue-500 ${
+                    pathname === link.href ? "text-blue-500" : "text-amber-500"
                   }`}
                 >
                   {link.label}
@@ -146,7 +165,7 @@ export function Header() {
                 <>
                   <Link
                     href={dashboardLink}
-                    className="text-sm font-medium text-gray-600 dark:text-gray-300 hover:text-primary flex items-center gap-2"
+                    className="text-sm font-medium text-amber-500 hover:text-blue-500 flex items-center gap-2"
                   >
                     <User size={16} />
                     {isAdmin ? "Admin Dashboard" : "Dashboard"}
@@ -160,7 +179,7 @@ export function Header() {
                   </button>
                 </>
               ) : (
-                <Link href="/login" className="text-sm font-medium text-primary hover:text-primary/80">
+                <Link href="/login" className="text-sm font-medium text-amber-500 hover:text-blue-500">
                   Login / Register
                 </Link>
               )}

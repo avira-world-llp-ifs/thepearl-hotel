@@ -11,26 +11,15 @@ export const metadata = {
   description: "Explore our curated tour packages and discover the beauty of India.",
 }
 
-export const revalidate = 0 // Revalidate on every request
+export const revalidate = 3600 // Revalidate every hour
 
 async function getTours() {
   try {
-    const baseUrl = process.env.NEXT_PUBLIC_API_URL || ""
-    console.log("Fetching tours from:", `${baseUrl}/api/tours`)
+    // Use the service function instead of direct API call
+    const { getAllTours } = await import("@/lib/services/tour-service")
+    const tours = await getAllTours()
 
-    const res = await fetch(`${baseUrl}/api/tours`, {
-      next: { revalidate: 0 }, // Revalidate on every request
-    })
-
-    if (!res.ok) {
-      throw new Error(`Failed to fetch tours: ${res.status}`)
-    }
-
-    const data = await res.json()
-    console.log("Tours data:", data) // Debug log
-
-    // Handle different response formats
-    const tours = Array.isArray(data) ? data : data.tours || []
+    console.log("Tours fetched successfully:", tours.length)
     return tours
   } catch (error) {
     console.error("Error fetching tours:", error)

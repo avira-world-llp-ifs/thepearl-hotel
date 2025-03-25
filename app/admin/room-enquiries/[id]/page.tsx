@@ -16,16 +16,12 @@ export const metadata: Metadata = {
 
 async function getEnquiry(id: string) {
   try {
-    const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/enquiries/${id}`, {
-      cache: "no-store",
-      method: "GET",
-    })
+    // Import the enquiry service directly
+    const { enquiryService } = await import("@/lib/db")
 
-    if (!response.ok) {
-      throw new Error("Failed to fetch enquiry")
-    }
-
-    return await response.json()
+    // Get the enquiry directly from the service
+    const enquiry = await enquiryService.getById(id)
+    return enquiry
   } catch (error) {
     console.error("Error fetching enquiry:", error)
     return null
@@ -34,19 +30,12 @@ async function getEnquiry(id: string) {
 
 async function updateEnquiryStatus(id: string, status: { isRead?: boolean }) {
   try {
-    const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/enquiries/${id}`, {
-      method: "PATCH",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(status),
-    })
+    // Import the enquiry service directly
+    const { enquiryService } = await import("@/lib/db")
 
-    if (!response.ok) {
-      throw new Error("Failed to update enquiry status")
-    }
-
-    return await response.json()
+    // Update the enquiry directly using the service
+    const updatedEnquiry = await enquiryService.update(id, status)
+    return updatedEnquiry
   } catch (error) {
     console.error("Error updating enquiry status:", error)
     return null

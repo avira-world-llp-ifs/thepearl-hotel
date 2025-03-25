@@ -39,19 +39,11 @@ export async function generateMetadata({ params }: TourDetailPageProps): Promise
 
 async function getTour(id: string) {
   try {
-    const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/tours/${id}`, {
-      cache: "no-store",
-      next: { revalidate: 0 },
-    })
-
-    if (!response.ok) {
-      throw new Error("Failed to fetch tour")
-    }
-
-    return await response.json()
+    const { getTourById } = await import("@/lib/services/tour-service")
+    return await getTourById(id)
   } catch (error) {
-    console.error("Error fetching tour:", error)
-    return null
+    console.error(`Error fetching tour with ID ${id}:`, error)
+    notFound()
   }
 }
 

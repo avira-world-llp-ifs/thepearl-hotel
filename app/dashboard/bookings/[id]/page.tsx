@@ -2,19 +2,7 @@ import { getCurrentUser } from "@/lib/auth"
 import { redirect, notFound } from "next/navigation"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
-import {
-  CalendarClock,
-  Calendar,
-  Users,
-  ArrowLeft,
-  CheckCircle,
-  Clock,
-  XCircle,
-  MapPin,
-  Home,
-  Phone,
-  Mail,
-} from "lucide-react"
+import { CalendarClock, Calendar, Users, ArrowLeft, CheckCircle, Clock, XCircle, MapPin, Home } from "lucide-react"
 import { bookingService, roomService } from "@/lib/db"
 import { formatDate, formatCurrency, formatBookingId } from "@/lib/utils"
 import { Badge } from "@/components/ui/badge"
@@ -215,15 +203,10 @@ export default async function BookingDetailsPage({ params }) {
               <p className="text-sm text-muted-foreground">
                 If you need to modify or cancel your booking, please contact our customer service.
               </p>
-              <div className="space-y-2">
-                <div className="flex items-center">
-                  <Phone className="h-4 w-4 mr-2 text-muted-foreground" />
-                  <span>+1 (555) 123-4567</span>
-                </div>
-                <div className="flex items-center">
-                  <Mail className="h-4 w-4 mr-2 text-muted-foreground" />
-                  <span>support@hotelname.com</span>
-                </div>
+              <div className="mt-6">
+                <h3 className="text-lg font-semibold mb-2">Contact Information</h3>
+                <p className="text-gray-600">+91 (11) 23633363, 23634363</p>
+                <p className="text-gray-600">hotelthepearl55@gmail.com</p>
               </div>
             </CardContent>
           </Card>
