@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react"
 import Image from "next/image"
 import Link from "next/link"
-import { Facebook, Twitter, Instagram, ArrowRight, CheckCircle2 } from "lucide-react"
+import { ArrowRight, CheckCircle2 } from "lucide-react"
 
 export default function AboutPage() {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
@@ -47,8 +47,6 @@ export default function AboutPage() {
   }
 
   return (
-
-
     <div className="min-h-screen bg-white">
       {/* Page Title Section */}
       <section

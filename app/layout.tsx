@@ -1,19 +1,18 @@
 import type React from "react"
 import type { Metadata } from "next"
+import { Suspense } from "react"
 import { Inter } from "next/font/google"
 import "./globals.css"
-import { ThemeProvider } from "@/components/theme-provider"
 import { Header } from "@/components/header"
 import { Footer } from "@/components/footer"
-import { Toaster } from "@/components/ui/toaster"
-import { AuthProvider } from "@/components/auth-provider"
+import { Providers } from "@/components/providers/providers"
 
 const inter = Inter({ subsets: ["latin"] })
 
 export const metadata: Metadata = {
-  title: "The Pearl",
-  description: "Book your stay at the most luxurious hotels around the world.",
-  generator: "aviraworld",
+  title: "The Pearl Hotel - Luxury Accommodations",
+  description: "Experience luxury and comfort at The Pearl Hotel. Book your stay today.",
+    generator: 'v0.dev'
 }
 
 export default function RootLayout({
@@ -24,22 +23,17 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body className={inter.className}>
-        <ThemeProvider attribute="class" defaultTheme="light" enableSystem={false} disableTransitionOnChange>
-          <AuthProvider>
-            <div className="flex flex-col min-h-screen">
-              <Header />
-              <main className="flex-grow">{children}</main>
-              <Footer />
-            </div>
-            <Toaster />
-          </AuthProvider>
-        </ThemeProvider>
+        <Providers>
+          <Suspense fallback={<div className="h-16"></div>}>
+            <Header />
+          </Suspense>
+          <main>{children}</main>
+          <Footer />
+        </Providers>
       </body>
     </html>
   )
 }
-
-import "./globals.css"
 
 
 

@@ -4,30 +4,43 @@ import { useState, useEffect } from "react"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
 import { Menu, X, User, LogOut } from "lucide-react"
-import { signOut, useSession } from "next-auth/react"
+import { signOut } from "next-auth/react"
 import { Button } from "@/components/ui/button"
 import { ThemeToggle } from "./theme-toggle"
 import { AnimatedPearlLogo } from "./animated-pearl-logo"
 
-export function Header() {
+export function SimpleHeader() {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
+  const [isLoggedIn, setIsLoggedIn] = useState(false)
+  const [isAdmin, setIsAdmin] = useState(false)
   const pathname = usePathname()
   const isDashboardOrAdmin = pathname?.startsWith("/dashboard") || pathname?.startsWith("/admin")
 
-  // Use useSession hook with explicit debugging
-  const { data: session, status } = useSession()
-  const isLoggedIn = status === "authenticated"
-  const isAdmin = session?.user?.role?.toLowerCase() === "admin"
-
-  // Debug session information
+  // Check authentication status client-side after mount
   useEffect(() => {
-    if (typeof window !== "undefined") {
-      console.log("Session status:", status)
-      console.log("Is logged in:", isLoggedIn)
-      console.log("Session data:", session)
-      console.log("Is admin:", isAdmin)
+    const checkAuth = async () => {
+      try {
+        // Check if user is logged in
+        const authRes = await fetch("/api/auth/status")
+        const authData = await authRes.json()
+
+        setIsLoggedIn(authData.authenticated)
+
+        if (authData.authenticated) {
+          // Check if user is admin
+          const roleRes = await fetch("/api/auth/check-role")
+          const roleData = await roleRes.json()
+          setIsAdmin(roleData.isAdmin)
+        }
+      } catch (error) {
+        console.error("Error checking auth status:", error)
+        setIsLoggedIn(false)
+        setIsAdmin(false)
+      }
     }
-  }, [session, status, isLoggedIn, isAdmin])
+
+    checkAuth()
+  }, [])
 
   // Close mobile menu when route changes
   useEffect(() => {
@@ -40,6 +53,8 @@ export function Header() {
 
   const handleLogout = async () => {
     await signOut({ callbackUrl: "/" })
+    setIsLoggedIn(false)
+    setIsAdmin(false)
   }
 
   const navLinks = [
@@ -186,13 +201,6 @@ export function Header() {
           </div>
         )}
       </div>
-
-      {/* Debug overlay - remove in production */}
-      {typeof window !== "undefined" && (
-        <div className="fixed bottom-4 right-4 bg-black/80 text-white p-2 rounded-lg text-xs z-50">
-          Status: {status} | Logged in: {isLoggedIn ? "Yes" : "No"} | Admin: {isAdmin ? "Yes" : "No"}
-        </div>
-      )}
     </header>
   )
 }

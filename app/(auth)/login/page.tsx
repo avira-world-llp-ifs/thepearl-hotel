@@ -15,7 +15,14 @@ import { AlertCircle } from "lucide-react"
 
 export default function LoginPage() {
   const router = useRouter()
-  const { data: session, status } = useSession()
+  // The issue is with how useSession is being destructured at the top level
+  // Replace this line:
+  // const { data: session, status } = useSession()
+
+  // With this code that safely handles the case when useSession returns undefined:
+  const session = useSession()
+  const status = session?.status || "loading"
+  const userData = session?.data
   const searchParams = useSearchParams()
   const callbackUrl = searchParams.get("callbackUrl") || ""
   const errorParam = searchParams.get("error")
@@ -28,15 +35,19 @@ export default function LoginPage() {
 
   // Check if user is already logged in and redirect accordingly
   useEffect(() => {
-    if (status === "authenticated" && session?.user && !isRedirecting) {
-      setIsRedirecting(true)
-      console.log("User is authenticated, redirecting based on role or callback URL")
-      console.log("User role:", session.user.role)
+    // Now we need to update all references to session in the useEffect
+    // Replace this check:
+    // if (status === "authenticated" && session?.user && !isRedirecting) {
+
+    // With this check:
+    if (status === "authenticated" && userData?.user && !isRedirecting) {
+      // And update the references to session.user:
+      console.log("User role:", userData.user.role)
 
       // If there's a callback URL, use it (but only if the user has permission)
       if (callbackUrl) {
         // Check if the callback URL is for an admin page but the user is not an admin
-        if (callbackUrl.startsWith("/admin") && session.user.role !== "ADMIN" && session.user.role !== "admin") {
+        if (callbackUrl.startsWith("/admin") && userData.user.role !== "ADMIN" && userData.user.role !== "admin") {
           console.log("User tried to access admin page but is not an admin, redirecting to dashboard")
           router.push("/dashboard")
           return
@@ -48,7 +59,7 @@ export default function LoginPage() {
       }
 
       // Otherwise, redirect based on role
-      if (session.user.role === "ADMIN" || session.user.role === "admin") {
+      if (userData.user.role === "ADMIN" || userData.user.role === "admin") {
         console.log("Admin user detected, redirecting to /admin")
         router.push("/admin")
       } else {
@@ -56,7 +67,7 @@ export default function LoginPage() {
         router.push("/dashboard")
       }
     }
-  }, [session, status, router, callbackUrl, isRedirecting])
+  }, [userData, status, router, callbackUrl, isRedirecting])
 
   // Set error message based on URL parameter
   useEffect(() => {

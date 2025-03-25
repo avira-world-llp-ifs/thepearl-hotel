@@ -67,7 +67,7 @@
     "@mongodb-js/zstd": "latest",
     "mongodb-client-encryption": "latest",
     "@aws-sdk/credential-providers": "latest",
-    "jspdf": "latest",
+    "@emotion/is-prop-valid": "latest",
     "next-auth": "latest",
     "mongodb": "latest",
     "bcryptjs": "latest",
@@ -79,9 +79,10 @@
     "@heroicons/react": "latest",
     "@remix-run/react": "latest",
     "chart.js": "latest",
+    "jspdf": "latest",
     "html2canvas": "latest",
     "swiper": "latest",
-    "jspdf-autotable": "latest"
+    "framer-motion": "latest"
   },
   "devDependencies": {
     "@types/node": "^22",

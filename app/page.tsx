@@ -436,7 +436,7 @@ export default function Home() {
           </section>
 
           {/* Room Comparison Section */}
-          <section className="bg-gray-50 w-full pt-16">
+          <section className="bg-gray-50 w-full">
             <div className="grid grid-cols-1 md:grid-cols-3 w-full">
               {/* Left Content - Deluxe Room */}
               <div className="p-8 md:p-16 flex flex-col justify-center">
@@ -595,7 +595,11 @@ export default function Home() {
                       <path d="M42,8c-1.1,0-2,0.9-2,2v4c0,5.5-4.5,10-10,10s-10-4.5-10-10v-4c0-1.1-0.9-2-2-2s-2,0.9-2,2v4c0,7.7,6.3,14,14,14 s14-6.3,14-14v-4C44,8.9,43.1,8,42,8z" />
                       <path d="M26,8c-1.1,0-2,0.9-2,2v12c0,1.1,0.9,2,2,2s2-0.9,2-2V10C28,8.9,27.1,8,26,8z" />
                       <path d="M34,8c-1.1,0-2,0.9-2,2v12c0,1.1,0.9,2,2,2s2-0.9,2-2V10C36,8.9,35.1,8,34,8z" />
-                      <path d="M46,36H18c-1.1,0-2,0.9-2,2v16c0,1.1,0.9,2,2,2h28c1.1,0,2-0.9,2-2V38C48,36.9,47.1,36,46,36z M44,52H20V40h24V52z" />
+                      <path
+                        d="M46,36H18c-1.1,0-2,0.9-2,2v16c0,1.1,0.9,2,2,2h28c1.1,0,2-0.9,2-2V38C48,36.9,47.1,36,46
+</cut_off_point>
+z M44,52H20V40h24V52z"
+                      />
                     </svg>
                   </div>
                   <h3 className="text-lg font-medium text-gray-800" style={{ fontFamily: "var(--font-montserrat)" }}>

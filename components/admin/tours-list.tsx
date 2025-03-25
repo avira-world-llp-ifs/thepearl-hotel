@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react"
 import Link from "next/link"
 import Image from "next/image"
-import { Edit, Eye, MoreHorizontal, Loader2 } from "lucide-react"
+import { Eye, MoreHorizontal, Loader2 } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import {
   DropdownMenu,
@@ -160,12 +160,6 @@ export default function AdminToursList() {
                         <Link href={`/tours/${tour._id}`}>
                           <Eye className="mr-2 h-4 w-4" />
                           View
-                        </Link>
-                      </DropdownMenuItem>
-                      <DropdownMenuItem asChild>
-                        <Link href={`/admin/tours/edit/${tour._id}`}>
-                          <Edit className="mr-2 h-4 w-4" />
-                          Edit
                         </Link>
                       </DropdownMenuItem>
                       <DropdownMenuSeparator />

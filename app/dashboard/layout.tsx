@@ -3,6 +3,7 @@ import { redirect } from "next/navigation"
 import { getServerSession } from "next-auth/next"
 import { authOptions } from "@/lib/auth"
 import DashboardSidebar from "@/components/dashboard/sidebar"
+import { LayoutTransition } from "@/components/layout-transition"
 
 export const dynamic = "force-dynamic" // Disable caching for this layout
 
@@ -24,12 +25,14 @@ export default async function DashboardLayout({
     }
 
     return (
-      <div className="flex flex-col md:flex-row min-h-screen">
-        <div className="w-64 md:w-72 flex-shrink-0">
-          <DashboardSidebar />
+      <LayoutTransition>
+        <div className="flex flex-col md:flex-row min-h-screen">
+          <div className="w-64 md:w-72 flex-shrink-0">
+            <DashboardSidebar />
+          </div>
+          <main className="flex-1 p-4 md:p-8 w-full overflow-auto">{children}</main>
         </div>
-        <main className="flex-1 p-4 md:p-8 w-full overflow-auto">{children}</main>
-      </div>
+      </LayoutTransition>
     )
   } catch (error) {
     console.error("Error in dashboard layout:", error)

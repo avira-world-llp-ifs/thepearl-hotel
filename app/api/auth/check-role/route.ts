@@ -1,22 +1,23 @@
+import { getServerSession } from "next-auth/next"
 import { NextResponse } from "next/server"
-import { getCurrentUser } from "@/lib/auth"
+import { authOptions } from "@/lib/auth"
 
 export async function GET() {
-  try {
-    const user = await getCurrentUser()
+  const session = await getServerSession(authOptions)
 
-    if (!user) {
-      return NextResponse.json({ authenticated: false }, { status: 401 })
-    }
-
+  if (!session) {
     return NextResponse.json({
-      authenticated: true,
-      role: user.role,
-      redirectTo: user.role === "ADMIN" ? "/admin" : "/dashboard",
+      isAdmin: false,
+      message: "Not authenticated",
     })
-  } catch (error) {
-    console.error("Error checking role:", error)
-    return NextResponse.json({ error: "Internal server error" }, { status: 500 })
   }
+
+  // Check if user role is admin (case insensitive)
+  const isAdmin = typeof session.user.role === "string" && session.user.role.toLowerCase() === "admin"
+
+  return NextResponse.json({
+    isAdmin,
+    role: session.user.role,
+  })
 }
 

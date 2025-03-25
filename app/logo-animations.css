@@ -1,0 +1,15 @@
+@keyframes continuousBounce {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-5px);
+  }
+}
+
+.continuous-pearl-letter {
+  display: inline-block;
+  transform-origin: bottom center;
+}
+

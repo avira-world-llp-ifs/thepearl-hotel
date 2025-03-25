@@ -1,42 +1,49 @@
-"use server"
+// Ensure we're using the correct MongoDB connection pattern for Vercel deployments
+// This pattern helps prevent connection pool exhaustion in serverless environments
 
-import { MongoClient } from "mongodb"
+import mongoose from "mongoose"
 
 const MONGODB_URI = process.env.MONGODB_URI
-const MONGODB_DB = process.env.MONGODB_DB || "hotel-booking"
 
-// Check if MongoDB URI is defined
 if (!MONGODB_URI) {
-  throw new Error("Please define the MONGODB_URI environment variable")
+  throw new Error("Please define the MONGODB_URI environment variable inside .env.local")
 }
 
-let cachedClient: MongoClient | null = null
-let cachedDb: any = null
+/**
+ * Global is used here to maintain a cached connection across hot reloads
+ * in development. This prevents connections growing exponentially
+ * during API Route usage.
+ */
+let cached = global.mongoose
 
-export async function connectToDatabase() {
-  // If we already have a connection, use it
-  if (cachedClient && cachedDb) {
-    return { client: cachedClient, db: cachedDb }
+if (!cached) {
+  cached = global.mongoose = { conn: null, promise: null }
+}
+
+async function dbConnect() {
+  if (cached.conn) {
+    return cached.conn
   }
 
-  // Create a new connection
-  const client = new MongoClient(MONGODB_URI as string, {
-    // Avoid using optional features that require binary modules
-    monitorCommands: false,
-  })
+  if (!cached.promise) {
+    const opts = {
+      bufferCommands: false,
+    }
 
-  await client.connect()
-  const db = client.db(MONGODB_DB)
+    cached.promise = mongoose.connect(MONGODB_URI, opts).then((mongoose) => {
+      return mongoose
+    })
+  }
 
-  // Cache the connection
-  cachedClient = client
-  cachedDb = db
+  try {
+    cached.conn = await cached.promise
+  } catch (e) {
+    cached.promise = null
+    throw e
+  }
 
-  return { client, db }
+  return cached.conn
 }
 
-export default async function dbConnect() {
-  const { db } = await connectToDatabase()
-  return db
-}
+export default dbConnect
 

@@ -10,7 +10,8 @@ import { Loader2 } from "lucide-react"
 
 export default function BookingConfirmPage() {
   const router = useRouter()
-  const { data: session, status } = useSession()
+  // Fix useSession to handle undefined safely
+  const session = useSession()
   const [bookingData, setBookingData] = useState<any>(null)
   const [room, setRoom] = useState<any>(null)
   const [isLoading, setIsLoading] = useState(false)
@@ -18,7 +19,7 @@ export default function BookingConfirmPage() {
 
   useEffect(() => {
     // Check if user is authenticated
-    if (status === "unauthenticated") {
+    if (session?.status === "unauthenticated") {
       router.push("/login?redirect=/booking/confirm")
       return
     }
@@ -48,10 +49,10 @@ export default function BookingConfirmPage() {
     }
 
     fetchRoom()
-  }, [router, status])
+  }, [router, session?.status])
 
   const handleConfirmBooking = async () => {
-    if (!session?.user?.id) {
+    if (!session?.data?.user?.id) {
       alert("You must be logged in to complete this booking")
       return
     }
@@ -61,7 +62,7 @@ export default function BookingConfirmPage() {
     try {
       // Add user ID to booking data and normalize field names
       const completeBookingData = {
-        userId: session.user.id,
+        userId: session.data.user.id,
         roomId: bookingData.roomId,
         checkIn: bookingData.checkInDate,
         checkOut: bookingData.checkOutDate,
